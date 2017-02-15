@@ -1,0 +1,203 @@
+[data-css-module-id="solarfield/controls/src/Solarfield/Controls/style/select-control"] {display: none}
+
+.selectControl {
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	max-width: 100%;
+	text-align: left;
+}
+.selectControl[data-control-ready="1"] {
+	visibility: visible;
+}
+
+	.selectControlWidget {
+		display: flex;
+		position: relative;
+		flex-direction: row;
+		font: inherit;
+		font-weight: normal;
+		font-style: normal;
+		border: 1px solid ButtonText;
+		color: ButtonText;
+		background: ButtonFace;
+		cursor: pointer;
+	}
+
+		.selectControlLabel {
+			display: flex;
+			flex: 1;
+			align-items: center;
+			padding: .4em;
+			min-width: 0;
+		}
+
+			.selectControlLabelText {
+				width: 100%;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+		.selectControlButton {
+			display: flex;
+			align-items: center;
+			padding: .4em;
+		}
+
+			.selectControlButtonIcon {
+				display: inline-block;
+				font-weight: normal; font-family: icons;
+				line-height: 1;
+				margin: 0;
+				width: 1em;
+				height: 1em;
+				text-align: center;
+
+				&:before {
+					content: '\f0d7';
+					display: block;
+					vertical-align: baseline;
+					line-height: 1;
+				}
+			}
+
+		.selectControlSelect {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			width: 100%; //this should not be needed, but left/right are not always enough
+			opacity: 0;
+			cursor: pointer;
+		}
+
+		.selectControl[data-control-input-source="keyboard"],
+		.selectControl[data-control-pointer-type="mouse"] {
+			.selectControlSelect {
+				display: none;
+			}
+		}
+
+		.selectControlWidget:focus {
+			position: relative;
+			outline: 1px solid Highlight;
+		}
+
+	.selectControlPopup {
+		display: block;
+		position: fixed;
+		top: 10vh;
+		left: 10vh;
+		z-index: 100000;
+		margin: 0 0 0 -1px; //offset for border-width
+		border: 1px solid ButtonText;
+		color: ButtonText;
+		max-height: 80vh;
+		max-width: 80vw;
+		overflow-x: hidden;
+		overflow-y: auto;
+		background: ButtonFace;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+		-moz-user-select: none; -webkit-user-select: none; -ms-user-select: none; user-select: none;
+	}
+	.selectControl[data-control-open="0"] .selectControlPopup {
+		display: none;
+	}
+
+		.selectControlList {
+			display: block;
+			margin: 0;
+			padding: 0;
+		}
+
+			.selectControlItem {
+				display: flex;
+				margin: 0;
+				padding: 0;
+				border: 0 solid ButtonShadow;
+				outline: none;
+				cursor: pointer;
+			}
+			.selectControlItem + .selectControlItem {
+				border-top-width: 1px;
+			}
+
+				.selectControlItemButton {
+					display: flex;
+					align-items: center;
+					padding: .4em;
+				}
+
+					.selectControlItemButtonCheckbox {
+						display: inline-block;
+						font-weight: normal; font-family: icons;
+						line-height: 1;
+						margin: 0;
+						width: 1em;
+						height: 1em;
+						text-align: center;
+
+						&:before {
+							content: '\f096';
+							display: block;
+							vertical-align: baseline;
+							line-height: 1;
+						}
+					}
+
+					.selectControlItem[data-control-selected="1"] .selectControlItemButtonCheckbox:before {
+						content: '\f046';
+					}
+
+				.selectControlSingle .selectControlItemButton {
+					display: none;
+				}
+
+				.selectControlItemLabel {
+					display: flex;
+					flex: 1;
+					align-items: center;
+					padding: .4em;
+				}
+
+					.selectControlItemLabelText {
+						flex: 1;
+					}
+
+			.selectControl[data-control-input-source="keyboard"] .selectControlItem:focus {
+				outline: 1px solid Highlight;
+				outline-offset: -1px;
+			}
+
+			.selectControlItem[data-control-selected="1"] {
+				background: Highlight;
+				color: HighlightText;
+			}
+
+@keyframes selectControlPopupOpen {
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes selectControlPopupClose {
+	100% {
+		opacity: 0;
+		transform: scale(.95);
+	}
+}
+
+.selectControl[data-control-open="1"] .selectControlPopup[data-control-animation="opening"] {
+	opacity: 0;
+	transform: scale(.95);
+	animation-duration: 200ms;
+}
+
+.selectControl[data-control-open="0"] .selectControlPopup[data-control-animation="closing"] {
+	opacity: 1;
+	display: block;
+	animation-duration: 200ms;
+}

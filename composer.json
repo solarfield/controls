@@ -1,0 +1,16 @@
+{
+	"name": "solarfield/controls",
+
+	"support": {
+		"source": "https://github.com/solarfield/controls"
+	},
+
+	"require": {
+    "solarfield/ok-kit-js": "^0.1"
+	},
+
+	"repositories": {
+		"type": "vcs",
+		"url": "https://github.com/solarfield/ok-kit-js"
+	}
+}
