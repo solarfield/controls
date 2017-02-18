@@ -68,8 +68,9 @@
 			right: 0;
 			bottom: 0;
 			left: 0;
-			width: 100%; //this should not be needed, but left/right are not always enough
-			opacity: 0;
+			width: 100%; //we use top, right, etc. and width, height, for browser compatibility
+			height: 100%;
+			opacity: 0.01;
 			cursor: pointer;
 		}
 
