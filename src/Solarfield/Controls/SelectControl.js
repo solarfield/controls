@@ -13,7 +13,7 @@ define(
 		 * @class SelectControl
 		 * @extends Control
 		 */
-		const SelectControl = ObjectUtils.extend(Control, {
+		var SelectControl = ObjectUtils.extend(Control, {
 			//TODO: sort out events, implement change
 			//TODO: sort out animation handling, including extensibility
 			//TODO: use WeakMap instead of modifying element
@@ -56,7 +56,7 @@ define(
 			},
 
 			_scsc_handleSelectClick: function (aEvt) {
-				const obeyClick = aEvt.button == 0;
+				var obeyClick = aEvt.button == 0;
 
 				this.setInputSource('pointer');
 
@@ -90,7 +90,7 @@ define(
 			},
 
 			_scsc_handleWidgetClick: function (aEvt) {
-				const obeyClick = aEvt.button == 0;
+				var obeyClick = aEvt.button == 0;
 
 				if (obeyClick) {
 					this._scsc_openPopup();
@@ -100,9 +100,9 @@ define(
 			},
 
 			_scsc_handleWidgetKeypress: function (aEvt) {
-				const platform = navigator.platform+'';
-				const keyCode = aEvt.key;
-				const keyAlt = aEvt.getModifierState('Alt');
+				var platform = navigator.platform+'';
+				var keyCode = aEvt.key;
+				var keyAlt = aEvt.getModifierState('Alt');
 
 				if (
 					(platform.indexOf('Windows') > -1 && keyCode == '\u0020')
@@ -117,12 +117,12 @@ define(
 			},
 
 			_scsc_handleItemClick: function (aEvt) {
-				const obeyClick = aEvt.button == 0;
-				const item = aEvt.currentTarget || aEvt.target;
-				let changed;
+				var obeyClick = aEvt.button == 0;
+				var item = aEvt.currentTarget || aEvt.target;
+				var changed;
 
 				if (obeyClick) {
-					const multiple = this.getElement().querySelector('.selectControlSelect').multiple;
+					var multiple = this.getElement().querySelector('.selectControlSelect').multiple;
 
 					changed = this._scsc_setItemSelected(
 						item,
@@ -146,12 +146,12 @@ define(
 			},
 
 			_scsc_handleItemKeypress: function (aEvt) {
-				const item = aEvt.currentTarget || aEvt.target;
+				var item = aEvt.currentTarget || aEvt.target;
 
 				if (aEvt.key == 'Enter') {
-					const multiple = this.getElement().querySelector('.selectControlSelect').multiple;
+					var multiple = this.getElement().querySelector('.selectControlSelect').multiple;
 
-					const changed = this._scsc_setItemSelected(
+					var changed = this._scsc_setItemSelected(
 						item,
 						multiple ? !(item.getAttribute('data-control-selected') == true) : true
 					);
@@ -171,10 +171,10 @@ define(
 			},
 
 			_scsc_setItemSelected: function (aItemEl, aChecked) {
-				const selectEl = this.getElement().querySelector('.selectControlSelect');
-				let changed;
+				var selectEl = this.getElement().querySelector('.selectControlSelect');
+				var changed, i;
 
-				for (let i = 0; i < selectEl.options.length; i++) {
+				for (i = 0; i < selectEl.options.length; i++) {
 					if (selectEl.options[i].value === aItemEl.getAttribute('data-control-value')) {
 						changed = aChecked != selectEl.options[i].selected;
 						selectEl.options[i].selected = aChecked;
@@ -194,15 +194,15 @@ define(
 			},
 
 			_scsc_syncWidgetToSelect: function () {
-				const container = this.getElement();
-				let el, t;
+				var container = this.getElement();
+				var el, t, i, selectEl, text, placeholderSelected;
 
 				if (container && container.getAttribute('data-control-ready') == true) {
-					const selectEl = container.querySelector('.selectControlSelect');
-					let text = [];
-					let placeholderSelected = false;
+					selectEl = container.querySelector('.selectControlSelect');
+					text = [];
+					placeholderSelected = false;
 
-					for (let i = 0; i < selectEl.options.length; i++) {
+					for (i = 0; i < selectEl.options.length; i++) {
 						if (selectEl.options[i].selected) {
 							text.push(selectEl.options[i].text);
 						}
@@ -245,10 +245,10 @@ define(
 			_scsc_syncFocusables: function () {
 				//set the tabindex of the widget and/or the select
 
-				const container = this.getElement();
-				const selectEl = container.querySelector('.selectControlSelect');
-				const widgetEl = container.querySelector('.selectControlWidget');
-				const computedStyle = getComputedStyle(selectEl);
+				var container = this.getElement();
+				var selectEl = container.querySelector('.selectControlSelect');
+				var widgetEl = container.querySelector('.selectControlWidget');
+				var computedStyle = getComputedStyle(selectEl);
 
 				//if the select is hidden (not just invisible, but completely hidden, aka not aria-perceivable)
 				if (computedStyle.display != 'block') {
@@ -261,10 +261,10 @@ define(
 			},
 
 			_scsc_openPopup: function () {
-				const container = this.getElement();
-				let el, el2, elToFocus;
+				var container = this.getElement();
+				var el, el2, elToFocus, i, itemEl;
 
-				let popupEl = container.querySelector('.selectControlPopup');
+				var popupEl = container.querySelector('.selectControlPopup');
 
 				if (popupEl) {
 					popupEl.textContent = '';
@@ -274,16 +274,16 @@ define(
 					popupEl = document.createElement('span');
 				}
 
-				const selectEl = container.querySelector('.selectControlSelect');
+				var selectEl = container.querySelector('.selectControlSelect');
 
 				popupEl.classList.add('selectControlPopup');
 
-				const listEl = document.createElement('ol');
+				var listEl = document.createElement('ol');
 				listEl.classList.add('selectControlList');
 				popupEl.appendChild(listEl);
 
-				for (let i = 0; i < selectEl.options.length; i++) {
-					const itemEl = document.createElement('li');
+				for (i = 0; i < selectEl.options.length; i++) {
+					itemEl = document.createElement('li');
 					listEl.appendChild(itemEl);
 					itemEl.classList.add('selectControlItem');
 					itemEl.setAttribute('tabindex', '0');
@@ -326,7 +326,7 @@ define(
 
 				//focus the first checkbox
 				(function () {
-					const el = elToFocus || popupEl.querySelector('.selectControlItem');
+					var el = elToFocus || popupEl.querySelector('.selectControlItem');
 
 					if (el) {
 						setTimeout(function () {
@@ -347,9 +347,9 @@ define(
 				document.removeEventListener('mousedown', this._scsc_handleDocumentClick);
 				document.removeEventListener('keydown', this._scsc_handleDocumentKeypress);
 
-				const container = this.getElement();
-				const popup = this.getElement().querySelector('.selectControlPopup');
-				let promise;
+				var container = this.getElement();
+				var popup = this.getElement().querySelector('.selectControlPopup');
+				var promise;
 
 				container.dataset.controlOpen = 0;
 
@@ -364,17 +364,18 @@ define(
 			},
 
 			_scsc_syncPopupLayout: function () {
-				const popup = this.getElement().querySelector('.selectControlPopup');
-				const container = this.getElement();
+				var popup = this.getElement().querySelector('.selectControlPopup');
+				var container = this.getElement();
+				var i;
 
 				if (popup && container) {
-					const styles = [
+					var styles = [
 						['minWidth', container.offsetWidth + 'px'],
 						['left', Math.max(DomUtils.offsetLeft(container) - window.pageXOffset, 0) + 'px'],
 						['top', Math.max(DomUtils.offsetTop(container) - window.pageYOffset + (container.offsetHeight / 2) - (popup.offsetHeight / 2), 0) + 'px']
 					];
 
-					for (let i = 0; i < styles.length; i++) {
+					for (i = 0; i < styles.length; i++) {
 						if (popup.style[styles[i][0]] != styles[i][1]) {
 							popup.style[styles[i][0]] = styles[i][1];
 						}
@@ -387,8 +388,8 @@ define(
 			},
 
 			_scsc_handleDocumentClick: function (aEvt) {
-				const ancestorSelectControl = DomUtils.getAncestorByClassName(aEvt.target, 'selectControl');
-				const popup = this.getElement().querySelector('.selectControlPopup');
+				var ancestorSelectControl = DomUtils.getAncestorByClassName(aEvt.target, 'selectControl');
+				var popup = this.getElement().querySelector('.selectControlPopup');
 
 				//if the click happened outside the current selectControl
 				if (!ancestorSelectControl || (popup && popup.parentNode !== ancestorSelectControl)) {
@@ -407,9 +408,9 @@ define(
 			 * @protected
 			 */
 			animateOpen: function () {
-				const popup = this.getElement().querySelector('.selectControlPopup');
+				var popup = this.getElement().querySelector('.selectControlPopup');
 
-				const promise = AnimUtils.onAnimationEnd(popup, 'selectControlPopupOpen')
+				var promise = AnimUtils.onAnimationEnd(popup, 'selectControlPopupOpen')
 				.then(function () {
 					AnimUtils.setAnimation(popup, null);
 					popup.dataset.controlAnimation = '';
@@ -431,9 +432,9 @@ define(
 			 * @protected
 			 */
 			animateClose: function () {
-				const popup = this.getElement().querySelector('.selectControlPopup');
+				var popup = this.getElement().querySelector('.selectControlPopup');
 
-				const promise = AnimUtils.onAnimationEnd(popup, 'selectControlPopupClose')
+				var promise = AnimUtils.onAnimationEnd(popup, 'selectControlPopupClose')
 				.then(function () {
 					AnimUtils.setAnimation(popup, null);
 					popup.dataset.controlAnimation = '';
@@ -463,10 +464,11 @@ define(
 			 * @protected
 			 */
 			element_getValues: function () {
-				const values = [];
-				const options = this.getElement().querySelector('.selectControlSelect').options;
+				var values = [];
+				var options = this.getElement().querySelector('.selectControlSelect').options;
+				var i, len;
 
-				for (let i = 0, len = options.length; i < len; i++) {
+				for (i = 0, len = options.length; i < len; i++) {
 					if (options[i].selected) {
 						values.push(options[i].value);
 					}
@@ -506,14 +508,14 @@ define(
 					return CssLoader.import('solarfield/controls/src/Solarfield/Controls/style/select-control');
 				}.bind(this))
 				.then(function () {
-					const container = this.getElement();
-					let el, el2;
+					var container = this.getElement();
+					var el, el2;
 
 					container.classList.add('selectControl');
 					container.dataset.controlOpen = 0;
 
-					const selectEl = container.querySelector('select');
-					const multiple = selectEl.multiple;
+					var selectEl = container.querySelector('select');
+					var multiple = selectEl.multiple;
 					selectEl.classList.add('selectControlSelect');
 					selectEl.addEventListener('change', this._scsc_handleSelectChange);
 					selectEl.addEventListener('input', this._scsc_handleSelectInput);
@@ -523,7 +525,7 @@ define(
 					selectEl.addEventListener('keyup', this._scsc_handleSelectKeypress);
 					container.classList.add('selectControl' + (multiple ? 'Multi' : 'Single'));
 
-					const widgetEl = document.createElement('span');
+					var widgetEl = document.createElement('span');
 					widgetEl.className = 'selectControlWidget';
 					widgetEl.addEventListener('mousedown', this._scsc_handleWidgetClick);
 					widgetEl.addEventListener('keydown', this._scsc_handleWidgetKeypress);
@@ -553,9 +555,9 @@ define(
 					container.syncControlToElement();
 				}.bind(this))
 				.catch(function (e) {
-					let el;
+					var el;
 
-					let msg = "Could not create SelectControl.";
+					var msg = "Could not create SelectControl.";
 
 					if ((el = this.getElement().querySelector('select'))) {
 						if (el.name) {
@@ -564,7 +566,7 @@ define(
 					}
 
 					return Promise.reject((function () {
-						const error = new Error(msg);
+						var error = new Error(msg);
 						error.previous = e;
 						return error;
 					})());
