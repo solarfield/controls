@@ -414,6 +414,13 @@ define(
 				.then(function () {
 					AnimUtils.setAnimation(popup, null);
 					popup.dataset.controlAnimation = '';
+					
+					//workaround for IE11 layout not updating
+					if (self.navigator.userAgent.indexOf('Trident/7.0') > -1) {
+						var x = document.body.style.fontSize;
+						document.body.style.fontSize = '1px';
+						document.body.style.fontSize = x;
+					}
 				});
 
 				popup.dataset.controlAnimation = 'opening';
@@ -438,6 +445,13 @@ define(
 				.then(function () {
 					AnimUtils.setAnimation(popup, null);
 					popup.dataset.controlAnimation = '';
+					
+					//workaround for IE11 layout not updating
+					if (self.navigator.userAgent.indexOf('Trident/7.0') > -1) {
+						var x = document.body.style.fontSize;
+						document.body.style.fontSize = '1px';
+						document.body.style.fontSize = x;
+					}
 				});
 
 				popup.dataset.controlAnimation = 'closing';
