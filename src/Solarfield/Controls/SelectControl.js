@@ -138,6 +138,13 @@ define(
 
 				if (obeyClick) {
 					if (changed) {
+						//workaround for IE11 layout not updating
+						if (self.navigator.userAgent.indexOf('Trident/7.0') > -1) {
+							var x = document.body.style.fontSize;
+							document.body.style.fontSize = '1px';
+							document.body.style.fontSize = x;
+						}
+						
 						this.getElement().dispatchEvent(new CustomEvent('input', {
 							bubbles: true
 						}));
