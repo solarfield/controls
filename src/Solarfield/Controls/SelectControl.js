@@ -29,18 +29,14 @@ define(
 				this.getElement().syncControlToElement();
 				aEvt.stopPropagation();
 
-				this.getElement().dispatchEvent(new CustomEvent('change', {
-					bubbles: true
-				}));
+				this.getElement().dispatchEvent(new UIEvent('change'));
 			},
 
 			_scsc_handleSelectInput: function (aEvt) {
 				this.getElement().syncControlToElement();
 				aEvt.stopPropagation();
 
-				this.getElement().dispatchEvent(new CustomEvent('input', {
-					bubbles: true
-				}));
+				this.getElement().dispatchEvent(new InputEvent('input'));
 			},
 
 			_scsc_handleSelectTouch: function () {
@@ -145,9 +141,7 @@ define(
 							document.body.style.fontSize = x;
 						}
 						
-						this.getElement().dispatchEvent(new CustomEvent('input', {
-							bubbles: true
-						}));
+						this.getElement().dispatchEvent(new InputEvent('input'));
 					}
 				}
 			},
@@ -168,9 +162,7 @@ define(
 					}
 
 					if (changed) {
-						this.getElement().dispatchEvent(new CustomEvent('input', {
-							bubbles: true
-						}));
+						this.getElement().dispatchEvent(new InputEvent('input'));
 					}
 				}
 
