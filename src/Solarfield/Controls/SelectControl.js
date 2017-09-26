@@ -507,10 +507,12 @@ define(
 
 				this._scsc_syncWidgetToSelect();
 
-				if (this.getElement().querySelector('.selectControlPopup')) {
-					if (this.getElement().querySelector('.selectControlSelect').multiple) {
-						this._scsc_closePopup();
-						this._scsc_openPopup();
+				if (this.getElement().dataset.controlOpen == true) {
+					if (this.getElement().querySelector('.selectControlPopup')) {
+						if (this.getElement().querySelector('.selectControlSelect').multiple) {
+							this._scsc_closePopup();
+							this._scsc_openPopup();
+						}
 					}
 				}
 			},
