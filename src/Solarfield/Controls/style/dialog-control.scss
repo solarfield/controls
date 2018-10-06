@@ -1,0 +1,25 @@
+@keyframes dialogControlPopupOpen {
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes dialogControlPopupClose {
+	100% {
+		opacity: 0;
+		transform: scale(.95);
+	}
+}
+
+.dialogControl[data-control-open="1"] .dialogControlPopup[data-control-animation="opening"] {
+	opacity: 0;
+	transform: scale(.95);
+	animation-duration: 200ms;
+}
+
+.dialogControl[data-control-open="0"] .dialogControlPopup[data-control-animation="closing"] {
+	opacity: 1;
+	display: block;
+	animation-duration: 200ms;
+}
