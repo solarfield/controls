@@ -620,6 +620,20 @@ define(
 				});
 			}
 		});
+		
+		SelectControl._scsc_instances = new WeakMap();
+		
+		SelectControl.summon = function (aElement) {
+			return this._scsc_instances.get(aElement);
+		};
+		
+		SelectControl.create = function (aOptions) {
+			return SelectControl.super.create.call(this, aOptions)
+				.then(function (control) {
+					this._scsc_instances.set(control.getElement(), control);
+					return control
+				}.bind(this));
+		};
 
 		return SelectControl;
 	}
