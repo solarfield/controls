@@ -183,7 +183,7 @@ define(
 		
 		DialogControl.create = function (aOptions) {
 			return DialogControl.super.create.call(this, aOptions)
-				.then(function (control) {console.log(control)
+				.then(function (control) {
 					this._scdc_instances.set(control.getElement(), control);
 					return control
 				}.bind(this));
