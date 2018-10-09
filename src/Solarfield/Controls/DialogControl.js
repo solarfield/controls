@@ -9,7 +9,11 @@ define(
 	],
 	function (ObjectUtils, Control, CssLoader, AnimUtils, DomUtils, StructUtils) {
 		"use strict";
-	
+		
+		/**
+		 * @class DialogControl
+		 * @extends Control
+		 */
 		var DialogControl = ObjectUtils.extend(Control, {
 			_scdc_handleDocumentClick: function (aEvt) {
 				var ancestorSelectControl = DomUtils.getAncestorByClassName(aEvt.target, 'dialogControl');
@@ -170,6 +174,20 @@ define(
 				this.close();
 			}
 		});
+		
+		DialogControl._scdc_instances = new WeakMap();
+		
+		DialogControl.summon = function (aElement) {
+			return this._scdc_instances.get(aElement);
+		};
+		
+		DialogControl.create = function (aOptions) {
+			return DialogControl.super.create.call(this, aOptions)
+				.then(function (control) {console.log(control)
+					this._scdc_instances.set(control.getElement(), control);
+					return control
+				}.bind(this));
+		};
 		
 		return DialogControl;
 	}
