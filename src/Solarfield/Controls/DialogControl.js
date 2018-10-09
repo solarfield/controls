@@ -96,6 +96,14 @@ define(
 				return this.getElement().getAttribute('aria-hidden') === 'false';
 			},
 			
+			/**
+			 * @param aEvt
+			 * @protected
+			 */
+			handleCloseButtonClick: function (aEvt) {
+				this.close();
+			},
+			
 			open: function (aOptions) {
 				if (this.isOpen) return; // if already open
 				
@@ -127,26 +135,19 @@ define(
 			},
 			
 			toggle: function (aOptions) {
-				var hidden = this.getElement().getAttribute('aria-hidden') === 'true';
-				
-				if (hidden) {
-					this.open();
-				}	else {
+				if (this.isOpen) {
 					this.close();
+				}	else {
+					this.open();
 				}
 			},
 			
 			hookup: function (aOptions) {
 				var options = StructUtils.assign({
-					group: '',
 					autoClose : true,
 				}, aOptions);
 				
 				Object.defineProperties(this, {
-					group: {
-						value:''+options.group, // cast to string
-					},
-					
 					autoClose: {
 						value: true==options.autoClose, // cast to bool
 					},
@@ -162,6 +163,10 @@ define(
 				}.bind(this))
 				.then(function () {
 					this.getElement().classList.add('dialogControl');
+					
+					Array.from(this.getElement().querySelectorAll('.dialogControlCloseButton'), function (buttonEl) {
+						buttonEl.addEventListener('click', this.handleCloseButtonClick);
+					}.bind(this));
 				}.bind(this))
 			},
 			
@@ -170,6 +175,7 @@ define(
 				
 				this._scdc_handleDocumentClick = this._scdc_handleDocumentClick.bind(this);
 				this._scdc_handleDocumentKeypress = this._scdc_handleDocumentKeypress.bind(this);
+				this.handleCloseButtonClick = this.handleCloseButtonClick.bind(this);
 				
 				this.close();
 			}

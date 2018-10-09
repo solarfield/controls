@@ -7,14 +7,16 @@
   margin: 0;
   box-sizing: border-box;
   border: 1px solid ButtonText;
-  max-height: 80vh;
-  max-width: 80vw;
+  padding: .4em;
   color: ButtonText;
   background: ButtonFace;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); }
 
 .dialogControl[aria-hidden="true"] {
   display: none !important; }
+
+.dialogControlCloseButton {
+  cursor: pointer; }
 
 @keyframes dialogControlOpen {
   100% {
