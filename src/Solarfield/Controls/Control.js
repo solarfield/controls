@@ -55,12 +55,17 @@ define(
 
 				return this._cfc_eventTarget;
 			},
+			
+			syncToElement: function () {
+			
+			},
 
 			/**
 			 * @protected
 			 */
 			element_syncControlToElement: function () {
 				console.warn("Control: Element.syncControlToElement() has been deprecated.");
+				this.syncToElement();
 			},
 
 			/**
@@ -89,9 +94,7 @@ define(
 			 * @public
 			 */
 			hookup: function (aOptions) {
-				Object.defineProperties(this, {
-					syncToElement: this.element_syncControlToElement,
-				});
+				this.syncToElement = this.syncToElement.bind(this);
 				
 				this.getElement().syncControlToElement = this.element_syncControlToElement.bind(this);
 

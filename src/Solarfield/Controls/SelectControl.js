@@ -512,11 +512,8 @@ define(
 				return this._scsc_setValues(aValues);
 			},
 			
-			/**
-			 * @protected
-			 */
-			element_syncControlToElement: function () {
-				SelectControl.super.prototype.element_syncControlToElement.apply(this, arguments);
+			syncToElement: function () {
+				SelectControl.super.prototype.syncToElement.apply(this, arguments);
 
 				this._scsc_syncWidgetToSelect();
 
