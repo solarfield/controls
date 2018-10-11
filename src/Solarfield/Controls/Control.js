@@ -11,12 +11,16 @@ define(
 		 * @class Control
 		 */
 		var Control = ObjectUtils.extend(Object, {
+			_getElement: function () {
+				return this._cfc_element;
+			},
+			
 			/**
 			 * @param {string} aSource
 			 * @protected
 			 */
 			setInputSource: function (aSource) {
-				var container = this.getElement();
+				var container = this.element;
 
 				if (container.getAttribute('data-control-input-source') != aSource) {
 					container.setAttribute('data-control-input-source', aSource);
@@ -28,7 +32,7 @@ define(
 			 * @protected
 			 */
 			setPointerType: function (aType) {
-				var container = this.getElement();
+				var container = this.element;
 
 				if (aType === null) {
 					container.removeAttribute('data-control-pointer-type');
@@ -84,6 +88,7 @@ define(
 			 * @public
 			 */
 			getElement: function () {
+				console.warn("Control::getElement() has been deprecated.");
 				return this._cfc_element;
 			},
 
@@ -96,7 +101,7 @@ define(
 			hookup: function (aOptions) {
 				this.syncToElement = this.syncToElement.bind(this);
 				
-				this.getElement().syncControlToElement = this.element_syncControlToElement.bind(this);
+				this.element.syncControlToElement = this.element_syncControlToElement.bind(this);
 
 				return Promise.resolve();
 			},
@@ -112,6 +117,12 @@ define(
 				if (!aOptions.element) throw new Error(
 					"The 'element' option is required."
 				);
+				
+				Object.defineProperties(this, {
+					element: {
+						get: this._getElement,
+					}
+				});
 
 				/**
 				 * @private

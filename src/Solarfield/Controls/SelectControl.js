@@ -26,17 +26,17 @@ define(
 			 * @private
 			 */
 			_scsc_handleSelectChange: function (aEvt) {
-				this.getElement().syncControlToElement();
+				this.element.syncControlToElement();
 				aEvt.stopPropagation();
 
-				this.getElement().dispatchEvent(new UIEvent('change'));
+				this.element.dispatchEvent(new UIEvent('change'));
 			},
 
 			_scsc_handleSelectInput: function (aEvt) {
-				this.getElement().syncControlToElement();
+				this.element.syncControlToElement();
 				aEvt.stopPropagation();
 
-				this.getElement().dispatchEvent(new InputEvent('input'));
+				this.element.dispatchEvent(new InputEvent('input'));
 			},
 
 			_scsc_handleSelectTouch: function () {
@@ -81,7 +81,7 @@ define(
 				this._scsc_syncFocusables();
 
 				if (!SelectControl._scsc_touched) {
-					this.getElement().querySelector('.selectControlWidget').focus();
+					this.element.querySelector('.selectControlWidget').focus();
 				}
 			},
 
@@ -118,7 +118,7 @@ define(
 				var changed;
 
 				if (obeyClick) {
-					var multiple = this.getElement().querySelector('.selectControlSelect').multiple;
+					var multiple = this.element.querySelector('.selectControlSelect').multiple;
 
 					changed = this._scsc_setItemSelected(
 						item,
@@ -141,7 +141,7 @@ define(
 							document.body.style.fontSize = x;
 						}
 						
-						this.getElement().dispatchEvent(new InputEvent('input'));
+						this.element.dispatchEvent(new InputEvent('input'));
 					}
 				}
 			},
@@ -150,7 +150,7 @@ define(
 				var item = aEvt.currentTarget || aEvt.target;
 
 				if (aEvt.key == 'Enter') {
-					var multiple = this.getElement().querySelector('.selectControlSelect').multiple;
+					var multiple = this.element.querySelector('.selectControlSelect').multiple;
 
 					var changed = this._scsc_setItemSelected(
 						item,
@@ -162,7 +162,7 @@ define(
 					}
 
 					if (changed) {
-						this.getElement().dispatchEvent(new InputEvent('input'));
+						this.element.dispatchEvent(new InputEvent('input'));
 					}
 				}
 
@@ -170,7 +170,7 @@ define(
 			},
 
 			_scsc_setItemSelected: function (aItemEl, aChecked) {
-				var selectEl = this.getElement().querySelector('.selectControlSelect');
+				var selectEl = this.element.querySelector('.selectControlSelect');
 				var changed, i;
 
 				for (i = 0; i < selectEl.options.length; i++) {
@@ -193,7 +193,7 @@ define(
 			},
 
 			_scsc_syncWidgetToSelect: function () {
-				var container = this.getElement();
+				var container = this.element;
 				var el, t, i, selectEl, text, placeholderSelected;
 
 				if (container && container.getAttribute('data-control-ready') == true) {
@@ -244,7 +244,7 @@ define(
 			_scsc_syncFocusables: function () {
 				//set the tabindex of the widget and/or the select
 
-				var container = this.getElement();
+				var container = this.element;
 				var selectEl = container.querySelector('.selectControlSelect');
 				var widgetEl = container.querySelector('.selectControlWidget');
 				var computedStyle = getComputedStyle(selectEl);
@@ -260,7 +260,7 @@ define(
 			},
 
 			_scsc_openPopup: function () {
-				var container = this.getElement();
+				var container = this.element;
 				var el, el2, elToFocus, i, itemEl;
 
 				var popupEl = container.querySelector('.selectControlPopup');
@@ -346,8 +346,8 @@ define(
 				document.removeEventListener('mousedown', this._scsc_handleDocumentClick);
 				document.removeEventListener('keydown', this._scsc_handleDocumentKeypress);
 
-				var container = this.getElement();
-				var popup = this.getElement().querySelector('.selectControlPopup');
+				var container = this.element;
+				var popup = this.element.querySelector('.selectControlPopup');
 				var promise;
 
 				container.dataset.controlOpen = 0;
@@ -363,8 +363,8 @@ define(
 			},
 
 			_scsc_syncPopupLayout: function () {
-				var popup = this.getElement().querySelector('.selectControlPopup');
-				var container = this.getElement();
+				var popup = this.element.querySelector('.selectControlPopup');
+				var container = this.element;
 				var i;
 
 				if (popup && container) {
@@ -388,7 +388,7 @@ define(
 
 			_scsc_handleDocumentClick: function (aEvt) {
 				var ancestorSelectControl = DomUtils.getAncestorByClassName(aEvt.target, 'selectControl');
-				var popup = this.getElement().querySelector('.selectControlPopup');
+				var popup = this.element.querySelector('.selectControlPopup');
 
 				//if the click happened outside the current selectControl
 				if (!ancestorSelectControl || (popup && popup.parentNode !== ancestorSelectControl)) {
@@ -406,7 +406,7 @@ define(
 			 * @returns {Promise}
 			 */
 			_scsc_animateOpen: function () {
-				var popup = this.getElement().querySelector('.selectControlPopup');
+				var popup = this.element.querySelector('.selectControlPopup');
 
 				var promise = AnimUtils.onAnimationEnd(popup, 'selectControlPopupOpen')
 				.then(function () {
@@ -436,7 +436,7 @@ define(
 			 * @returns {Promise}
 			 */
 			_scsc_animateClose: function () {
-				var popup = this.getElement().querySelector('.selectControlPopup');
+				var popup = this.element.querySelector('.selectControlPopup');
 
 				var promise = AnimUtils.onAnimationEnd(popup, 'selectControlPopupClose')
 				.then(function () {
@@ -467,7 +467,7 @@ define(
 			 * @protected
 			 */
 			_scsc_getValue: function () {
-				return this.getElement().querySelector('.selectControlSelect').value;
+				return this.element.querySelector('.selectControlSelect').value;
 			},
 
 			/**
@@ -476,7 +476,7 @@ define(
 			 */
 			_scsc_getValues: function () {
 				var values = [];
-				var options = this.getElement().querySelector('.selectControlSelect').options;
+				var options = this.element.querySelector('.selectControlSelect').options;
 				var i, len;
 
 				for (i = 0, len = options.length; i < len; i++) {
@@ -493,8 +493,8 @@ define(
 			 * @protected
 			 */
 			_scsc_setValues: function (aValues) {
-				DomUtils.selectOptionsByValue(this.getElement().querySelector('.selectControlSelect'), aValues);
-				this.getElement().syncControlToElement();
+				DomUtils.selectOptionsByValue(this.element.querySelector('.selectControlSelect'), aValues);
+				this.element.syncControlToElement();
 			},
 			
 			element_getValue: function (aValue) {
@@ -517,9 +517,9 @@ define(
 
 				this._scsc_syncWidgetToSelect();
 
-				if (this.getElement().dataset.controlOpen == true) {
-					if (this.getElement().querySelector('.selectControlPopup')) {
-						if (this.getElement().querySelector('.selectControlSelect').multiple) {
+				if (this.element.dataset.controlOpen == true) {
+					if (this.element.querySelector('.selectControlPopup')) {
+						if (this.element.querySelector('.selectControlSelect').multiple) {
 							this._scsc_closePopup();
 							this._scsc_openPopup();
 						}
@@ -533,7 +533,7 @@ define(
 					return CssLoader.import('solarfield/controls/src/Solarfield/Controls/style/select-control');
 				}.bind(this))
 				.then(function () {
-					var container = this.getElement();
+					var container = this.element;
 					var el, el2;
 
 					container.classList.add('selectControl');
@@ -584,7 +584,7 @@ define(
 
 					var msg = "Could not create SelectControl.";
 
-					if ((el = this.getElement().querySelector('select'))) {
+					if ((el = this.element.querySelector('select'))) {
 						if (el.name) {
 							msg += " Element name: '" + el.name + "'."
 						}
@@ -632,7 +632,7 @@ define(
 					}
 				});
 				
-				Object.defineProperties(this.getElement(), {
+				Object.defineProperties(this.element, {
 					value: {
 						get: this.element_getValue,
 						set: this.element_setValues,
@@ -659,8 +659,8 @@ define(
 		SelectControl.create = function (aOptions) {
 			return SelectControl.super.create.call(this, aOptions)
 				.then(function (control) {
-					this._scsc_instances.set(control.getElement(), control);
-					this._scsc_instances.set(control.getElement().querySelector('.selectControlSelect'), control);
+					this._scsc_instances.set(control.element, control);
+					this._scsc_instances.set(control.element.querySelector('.selectControlSelect'), control);
 					return control
 				}.bind(this));
 		};
