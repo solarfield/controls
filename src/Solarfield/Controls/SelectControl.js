@@ -468,7 +468,7 @@ define(
 			 * @returns {string}
 			 * @protected
 			 */
-			element_getValue: function () {
+			_getValue: function () {
 				return this.getElement().querySelector('.selectControlSelect').value;
 			},
 
@@ -476,7 +476,7 @@ define(
 			 * @returns {Array}
 			 * @protected
 			 */
-			element_getValues: function () {
+			_getValues: function () {
 				var values = [];
 				var options = this.getElement().querySelector('.selectControlSelect').options;
 				var i, len;
@@ -494,11 +494,26 @@ define(
 			 * @param {string|Array|null} aValues
 			 * @protected
 			 */
-			element_setValues: function (aValues) {
+			_setValues: function (aValues) {
 				DomUtils.selectOptionsByValue(this.getElement().querySelector('.selectControlSelect'), aValues);
 				this.getElement().syncControlToElement();
 			},
+			
+			element_getValue: function (aValue) {
+				console.warn("SelectControl: Element.value has been deprecated.");
+				return this._getValue();
+			},
+			
+			element_getValues: function (aValues) {
+				console.warn("SelectControl: Element.values has been deprecated.");
+				return this._getValues();
+			},
 
+			element_setValues: function (aValues) {
+				console.warn("SelectControl: Element.values has been deprecated.");
+				return this._setValues(aValues);
+			},
+			
 			/**
 			 * @protected
 			 */
@@ -603,11 +618,25 @@ define(
 				this._scsc_handleDocumentClick = this._scsc_handleDocumentClick.bind(this);
 				this._scsc_handleDocumentKeypress = this._scsc_handleDocumentKeypress.bind(this);
 				this._scsc_handleWindowResize = this._scsc_handleWindowResize.bind(this);
-				this.element_syncControlToElement = this.element_syncControlToElement.bind(this);
 				this.element_getValue = this.element_getValue.bind(this);
 				this.element_getValues = this.element_getValues.bind(this);
 				this.element_setValues = this.element_setValues.bind(this);
+				this._getValue = this._getValue.bind(this);
+				this._getValues = this._getValues.bind(this);
+				this._setValues = this._setValues.bind(this);
 
+				Object.defineProperties(this, {
+					value: {
+						get: this._getValue,
+						set: this._setValues,
+					},
+
+					values: {
+						get: this._getValues,
+						set: this._setValues,
+					}
+				});
+				
 				Object.defineProperties(this.getElement(), {
 					value: {
 						get: this.element_getValue,

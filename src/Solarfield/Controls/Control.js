@@ -60,7 +60,7 @@ define(
 			 * @protected
 			 */
 			element_syncControlToElement: function () {
-
+				console.warn("Control: Element.syncControlToElement() has been deprecated.");
 			},
 
 			/**
@@ -89,6 +89,10 @@ define(
 			 * @public
 			 */
 			hookup: function (aOptions) {
+				Object.defineProperties(this, {
+					syncToElement: this.element_syncControlToElement,
+				});
+				
 				this.getElement().syncControlToElement = this.element_syncControlToElement.bind(this);
 
 				return Promise.resolve();
@@ -100,6 +104,8 @@ define(
 			 * @constructor
 			 */
 			constructor: function (aOptions) {
+				this.element_syncControlToElement = this.element_syncControlToElement.bind(this);
+				
 				if (!aOptions.element) throw new Error(
 					"The 'element' option is required."
 				);
