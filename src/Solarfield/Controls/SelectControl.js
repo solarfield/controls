@@ -491,11 +491,11 @@ define(
 			},
 
 			/**
-			 * @param {string|Array|null} aValue
+			 * @param {string|Array|null} aValues
 			 * @protected
 			 */
-			element_setValue: function (aValue) {
-				DomUtils.selectOptionsByValue(this.getElement().querySelector('.selectControlSelect'), aValue);
+			element_setValues: function (aValues) {
+				DomUtils.selectOptionsByValue(this.getElement().querySelector('.selectControlSelect'), aValues);
 				this.getElement().syncControlToElement();
 			},
 
@@ -606,16 +606,17 @@ define(
 				this.element_syncControlToElement = this.element_syncControlToElement.bind(this);
 				this.element_getValue = this.element_getValue.bind(this);
 				this.element_getValues = this.element_getValues.bind(this);
-				this.element_setValue = this.element_setValue.bind(this);
+				this.element_setValues = this.element_setValues.bind(this);
 
 				Object.defineProperties(this.getElement(), {
 					value: {
 						get: this.element_getValue,
-						set: this.element_setValue
+						set: this.element_setValues,
 					},
 
 					values: {
-						get: this.element_getValues
+						get: this.element_getValues,
+						set: this.element_setValues,
 					}
 				});
 			}
