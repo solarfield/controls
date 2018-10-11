@@ -19,7 +19,7 @@ define(
 				var ancestorSelectControl = DomUtils.getAncestorByClassName(aEvt.target, 'dialogControl');
 
 				//if the click happened outside the current dialogControl
-				if (!ancestorSelectControl || ancestorSelectControl !== this.getElement()) {
+				if (!ancestorSelectControl || ancestorSelectControl !== this.element) {
 					this.close();
 				}
 			},
@@ -35,7 +35,7 @@ define(
 			 * @protected
 			 */
 			_scdc_animateOpen: function () {
-				var popup = this.getElement();
+				var popup = this.element;
 
 				var promise = AnimUtils.onAnimationEnd(popup, 'dialogControlOpen')
 					.then(function () {
@@ -66,7 +66,7 @@ define(
 			 * @protected
 			 */
 			_scdc_animateClose: function () {
-				var popup = this.getElement();
+				var popup = this.element;
 
 				var promise = AnimUtils.onAnimationEnd(popup, 'dialogControlClose')
 					.then(function () {
@@ -93,7 +93,7 @@ define(
 			},
 			
 			_scdc_isOpen: function () {
-				return this.getElement().getAttribute('aria-hidden') === 'false';
+				return this.element.getAttribute('aria-hidden') === 'false';
 			},
 			
 			/**
@@ -107,9 +107,9 @@ define(
 			open: function (aOptions) {
 				if (this.isOpen) return; // if already open
 				
-				var doc = this.getElement().ownerDocument;
+				var doc = this.element.ownerDocument;
 				
-				this.getElement().setAttribute('aria-hidden', 'false');
+				this.element.setAttribute('aria-hidden', 'false');
 				
 				if (this.autoClose) {
 					doc.addEventListener('mousedown', this._scdc_handleDocumentClick);
@@ -122,9 +122,9 @@ define(
 			close: function (aOptions) {
 				if (!this.isOpen) return; // if already closed
 				
-				var doc = this.getElement().ownerDocument;
+				var doc = this.element.ownerDocument;
 				
-				this.getElement().setAttribute('aria-hidden', 'true');
+				this.element.setAttribute('aria-hidden', 'true');
 				
 				if (this.autoClose) {
 					doc.removeEventListener('mousedown', this._scdc_handleDocumentClick);
@@ -162,9 +162,9 @@ define(
 					return CssLoader.import('solarfield/controls/src/Solarfield/Controls/style/dialog-control');
 				}.bind(this))
 				.then(function () {
-					this.getElement().classList.add('dialogControl');
+					this.element.classList.add('dialogControl');
 					
-					Array.from(this.getElement().querySelectorAll('.dialogControlCloseButton'), function (buttonEl) {
+					Array.from(this.element.querySelectorAll('.dialogControlCloseButton'), function (buttonEl) {
 						buttonEl.addEventListener('click', this.handleCloseButtonClick);
 					}.bind(this));
 				}.bind(this))
@@ -190,7 +190,7 @@ define(
 		DialogControl.create = function (aOptions) {
 			return DialogControl.super.create.call(this, aOptions)
 				.then(function (control) {
-					this._scdc_instances.set(control.getElement(), control);
+					this._scdc_instances.set(control.element, control);
 					return control
 				}.bind(this));
 		};
