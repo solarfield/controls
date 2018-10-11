@@ -627,10 +627,15 @@ define(
 			return this._scsc_instances.get(aElement);
 		};
 		
+		SelectControl.summonBySelect = function (aSelectElement) {
+			return this._scsc_instances.get(aSelectElement);
+		};
+		
 		SelectControl.create = function (aOptions) {
 			return SelectControl.super.create.call(this, aOptions)
 				.then(function (control) {
 					this._scsc_instances.set(control.getElement(), control);
+					this._scsc_instances.set(control.getElement().querySelector('.selectControlSelect'), control);
 					return control
 				}.bind(this));
 		};
