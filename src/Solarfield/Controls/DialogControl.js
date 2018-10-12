@@ -116,6 +116,11 @@ define(
 					doc.addEventListener('keydown', this._scdc_handleDocumentKeypress);
 				}
 				
+				this.getEventTarget().dispatchEvent(this, {
+					type: 'open',
+					target: this,
+				});
+				
 				this._scdc_animateOpen();
 			},
 			
@@ -131,6 +136,11 @@ define(
 					doc.removeEventListener('keydown', this._scdc_handleDocumentKeypress);
 				}
 				
+				this.getEventTarget().dispatchEvent(this, {
+					type: 'close',
+					target: this,
+				});
+				
 				this._scdc_animateClose();
 			},
 			
@@ -140,6 +150,11 @@ define(
 				}	else {
 					this.open();
 				}
+				
+				this.getEventTarget().dispatchEvent(this, {
+					type: 'change',
+					target: this,
+				});
 			},
 			
 			hookup: function (aOptions) {
