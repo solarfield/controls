@@ -20,7 +20,7 @@ define(
 			//TODO: use getters/setters
 			//TODO: finalize font-face name, etc.
 			//TODO: finalize class names, prefixes, data-* attrs
-			
+
 			/**
 			 * @param {Event} aEvt
 			 * @private
@@ -140,7 +140,7 @@ define(
 							document.body.style.fontSize = '1px';
 							document.body.style.fontSize = x;
 						}
-						
+
 						this.element.dispatchEvent(new InputEvent('input'));
 					}
 				}
@@ -412,7 +412,7 @@ define(
 				.then(function () {
 					AnimUtils.setAnimation(popup, null);
 					popup.dataset.controlAnimation = '';
-					
+
 					//workaround for IE11 layout not updating
 					if (self.navigator.userAgent.indexOf('Trident/7.0') > -1) {
 						var x = document.body.style.fontSize;
@@ -442,7 +442,7 @@ define(
 				.then(function () {
 					AnimUtils.setAnimation(popup, null);
 					popup.dataset.controlAnimation = '';
-					
+
 					//workaround for IE11 layout not updating
 					if (self.navigator.userAgent.indexOf('Trident/7.0') > -1) {
 						var x = document.body.style.fontSize;
@@ -496,12 +496,12 @@ define(
 				DomUtils.selectOptionsByValue(this.element.querySelector('.selectControlSelect'), aValues);
 				this.syncToElement();
 			},
-			
+
 			element_getValue: function (aValue) {
 				console.warn("SelectControl: Element.value has been deprecated.");
 				return this._scsc_getValue();
 			},
-			
+
 			element_getValues: function (aValues) {
 				console.warn("SelectControl: Element.values has been deprecated.");
 				return this._scsc_getValues();
@@ -511,7 +511,7 @@ define(
 				console.warn("SelectControl: Element.values has been deprecated.");
 				return this._scsc_setValues(aValues);
 			},
-			
+
 			syncToElement: function () {
 				SelectControl.super.prototype.syncToElement.apply(this, arguments);
 
@@ -631,7 +631,7 @@ define(
 						set: this._scsc_setValues,
 					}
 				});
-				
+
 				Object.defineProperties(this.element, {
 					value: {
 						get: this.element_getValue,
@@ -645,17 +645,17 @@ define(
 				});
 			}
 		});
-		
+
 		SelectControl._scsc_instances = new WeakMap();
-		
+
 		SelectControl.summon = function (aElement) {
 			return this._scsc_instances.get(aElement);
 		};
-		
+
 		SelectControl.summonBySelect = function (aSelectElement) {
 			return this._scsc_instances.get(aSelectElement);
 		};
-		
+
 		SelectControl.create = function (aOptions) {
 			return SelectControl.super.create.call(this, aOptions)
 				.then(function (control) {
