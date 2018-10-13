@@ -16,8 +16,6 @@ define(
 		var SelectControl = ObjectUtils.extend(Control, {
 			//TODO: sort out events, implement change
 			//TODO: sort out animation handling, including extensibility
-			//TODO: use WeakMap instead of modifying element
-			//TODO: use getters/setters
 			//TODO: finalize font-face name, etc.
 			//TODO: finalize class names, prefixes, data-* attrs
 
