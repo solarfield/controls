@@ -26,14 +26,14 @@ define(
 			 * @private
 			 */
 			_scsc_handleSelectChange: function (aEvt) {
-				this.element.syncControlToElement();
+				this.syncToElement();
 				aEvt.stopPropagation();
 
 				this.element.dispatchEvent(new UIEvent('change'));
 			},
 
 			_scsc_handleSelectInput: function (aEvt) {
-				this.element.syncControlToElement();
+				this.syncToElement();
 				aEvt.stopPropagation();
 
 				this.element.dispatchEvent(new InputEvent('input'));
@@ -494,7 +494,7 @@ define(
 			 */
 			_scsc_setValues: function (aValues) {
 				DomUtils.selectOptionsByValue(this.element.querySelector('.selectControlSelect'), aValues);
-				this.element.syncControlToElement();
+				this.syncToElement();
 			},
 			
 			element_getValue: function (aValue) {
@@ -577,7 +577,7 @@ define(
 
 					this._scsc_syncFocusables();
 
-					container.syncControlToElement();
+					this.syncToElement();
 				}.bind(this))
 				.catch(function (e) {
 					var el;
