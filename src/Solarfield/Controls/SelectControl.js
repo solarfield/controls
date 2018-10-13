@@ -4,9 +4,10 @@ define(
 		'solarfield/controls/src/Solarfield/Controls/Control',
 		'solarfield/ok-kit-js/src/Solarfield/Ok/CssLoader',
 		'solarfield/ok-kit-js/src/Solarfield/Ok/DomUtils',
-		'solarfield/ok-kit-js/src/Solarfield/Ok/AnimUtils'
+		'solarfield/ok-kit-js/src/Solarfield/Ok/AnimUtils',
+		'solarfield/ok-kit-js/src/Solarfield/Ok/StructUtils'
 	],
-	function (ObjectUtils, Control, CssLoader, DomUtils, AnimUtils) {
+	function (ObjectUtils, Control, CssLoader, DomUtils, AnimUtils, StructUtils) {
 		"use strict";
 
 		/**
@@ -110,27 +111,39 @@ define(
 				this.setPointerType(null);
 			},
 
-			_scsc_handleItemClick: function (aEvt) {
+			_scsc_handleItemLabelClick: function (aEvt) {
+				var item = (aEvt.currentTarget || aEvt.target).parentNode;
 				var obeyClick = aEvt.button == 0;
-				var item = aEvt.currentTarget || aEvt.target;
-				var changed;
+				this._scsc_syncItemClick(item, obeyClick, true);
+			},
 
-				if (obeyClick) {
-					var multiple = this.element.querySelector('.selectControlSelect').multiple;
+			_scsc_handleItemButtonClick: function (aEvt) {
+				var item = (aEvt.currentTarget || aEvt.target).parentNode;
+				var obeyClick = aEvt.button == 0;
+				this._scsc_syncItemClick(item, obeyClick, false);
+			},
+
+			_scsc_syncItemClick: function (aItem, aObeyClick, aSingleMode) {
+				var changed, multiple, singleMode;
+
+				if (aObeyClick) {
+					multiple = this.element.querySelector('.selectControlSelect').multiple;
+					singleMode = aSingleMode && this.multipleSelectionMode != 'stay-open';
 
 					changed = this._scsc_setItemSelected(
-						item,
-						multiple ? !(item.getAttribute('data-control-selected') == true) : true
+						aItem,
+						multiple ? !(aItem.getAttribute('data-control-selected') == true) : true,
+						multiple && singleMode
 					);
 
-					if (!multiple) {
+					if (!multiple || singleMode) {
 						this._scsc_closePopup();
 					}
 				}
 
 				this.setInputSource('pointer');
 
-				if (obeyClick) {
+				if (aObeyClick) {
 					if (changed) {
 						//workaround for IE11 layout not updating
 						if (self.navigator.userAgent.indexOf('Trident/7.0') > -1) {
@@ -167,18 +180,28 @@ define(
 				this.setInputSource('keyboard');
 			},
 
-			_scsc_setItemSelected: function (aItemEl, aChecked) {
+			/**
+			 * @param {Element} aItemEl The .selectControlItem element.
+			 * @param {bool} aSelected Whether to set the item selected or unselected.
+			 * @param {bool} [aReplace=false] Whether to clear any previously selected options.
+			 * @return {bool}
+			 * @private
+			 */
+			_scsc_setItemSelected: function (aItemEl, aSelected, aReplace) {
 				var selectEl = this.element.querySelector('.selectControlSelect');
+				var replace = aReplace == undefined ? false : true == aReplace;
 				var changed, i;
+
+				if (replace) selectEl.selectedIndex = -1;
 
 				for (i = 0; i < selectEl.options.length; i++) {
 					if (selectEl.options[i].value === aItemEl.getAttribute('data-control-value')) {
-						changed = aChecked != selectEl.options[i].selected;
-						selectEl.options[i].selected = aChecked;
+						changed = aSelected != selectEl.options[i].selected;
+						selectEl.options[i].selected = aSelected;
 					}
 				}
 
-				if (aChecked) {
+				if (aSelected) {
 					aItemEl.dataset.controlSelected = 1;
 				}
 				else {
@@ -285,7 +308,6 @@ define(
 					itemEl.classList.add('selectControlItem');
 					itemEl.setAttribute('tabindex', '0');
 					itemEl.dataset.controlValue = selectEl.options[i].value;
-					itemEl.addEventListener('click', this._scsc_handleItemClick);
 					itemEl.addEventListener('keydown', this._scsc_handleItemKeypress);
 					if (selectEl.options[i].selected) {
 						this._scsc_setItemSelected(itemEl, true);
@@ -298,6 +320,7 @@ define(
 					el = document.createElement('span');
 					itemEl.appendChild(el);
 					el.classList.add('selectControlItemButton');
+					el.addEventListener('click', this._scsc_handleItemButtonClick);
 
 					el2 = document.createElement('span');
 					el.appendChild(el2);
@@ -306,6 +329,7 @@ define(
 					el = document.createElement('span');
 					itemEl.appendChild(el);
 					el.classList.add('selectControlItemLabel');
+					el.addEventListener('click', this._scsc_handleItemLabelClick);
 
 					el2 = document.createElement('span');
 					el.appendChild(el2);
@@ -596,6 +620,13 @@ define(
 				}.bind(this));
 			},
 
+			/**
+			 * @param {{}} [aOptions]
+			 * @param {string} [aOptions.multipleSelectionMode=stay-open] - How selection behaves in multiple mode.
+			 *  stay-open: The drop-down will stay open until the user clicks away, hits the Esc key, etc.
+			 *  smart: If the item label is clicked, the drop-down will close. If the checkbox is clicked,
+			 *    it will stay open.
+			 */
 			constructor: function (aOptions) {
 				SelectControl.super.apply(this, arguments);
 
@@ -606,7 +637,8 @@ define(
 				this._scsc_handleSelectKeypress = this._scsc_handleSelectKeypress.bind(this);
 				this._scsc_handleWidgetClick = this._scsc_handleWidgetClick.bind(this);
 				this._scsc_handleWidgetKeypress = this._scsc_handleWidgetKeypress.bind(this);
-				this._scsc_handleItemClick = this._scsc_handleItemClick.bind(this);
+				this._scsc_handleItemLabelClick = this._scsc_handleItemLabelClick.bind(this);
+				this._scsc_handleItemButtonClick = this._scsc_handleItemButtonClick.bind(this);
 				this._scsc_handleItemKeypress = this._scsc_handleItemKeypress.bind(this);
 				this._scsc_handleDocumentClick = this._scsc_handleDocumentClick.bind(this);
 				this._scsc_handleDocumentKeypress = this._scsc_handleDocumentKeypress.bind(this);
@@ -618,6 +650,16 @@ define(
 				this._scsc_getValues = this._scsc_getValues.bind(this);
 				this._scsc_setValues = this._scsc_setValues.bind(this);
 
+				var options = StructUtils.assign({
+					multipleSelectionMode: this.element.getAttribute('data-select-control-multiple-selection-mode'),
+				}, aOptions||{});
+				this.element.removeAttribute('data-select-control-multiple-selection-mode');
+
+				// validate the multipleSelectionMode option
+				if (!['stay-open', 'smart'].includes(options.multipleSelectionMode)) {
+					options.multipleSelectionMode = 'stay-open';
+				}
+
 				Object.defineProperties(this, {
 					value: {
 						get: this._scsc_getValue,
@@ -627,7 +669,11 @@ define(
 					values: {
 						get: this._scsc_getValues,
 						set: this._scsc_setValues,
-					}
+					},
+
+					multipleSelectionMode: {
+						value: options.multipleSelectionMode,
+					},
 				});
 
 				Object.defineProperties(this.element, {
