@@ -11,10 +11,6 @@ define(
 		 * @class Control
 		 */
 		var Control = ObjectUtils.extend(Object, {
-			_getElement: function () {
-				return this._cfc_element;
-			},
-			
 			/**
 			 * @param {string} aSource
 			 * @protected
@@ -89,7 +85,7 @@ define(
 			 */
 			getElement: function () {
 				console.warn("Control::getElement() has been deprecated.");
-				return this._cfc_element;
+				return this.element;
 			},
 
 			/**
@@ -119,15 +115,14 @@ define(
 				);
 				
 				Object.defineProperties(this, {
+					/**
+					 * @memberOf Control
+					 * @public
+					 */
 					element: {
-						get: this._getElement,
+						value: aOptions.element,
 					}
 				});
-
-				/**
-				 * @private
-				 */
-				this._cfc_element = aOptions.element;
 			}
 		});
 

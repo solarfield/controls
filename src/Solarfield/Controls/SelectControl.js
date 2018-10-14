@@ -484,54 +484,19 @@ define(
 				return promise;
 			},
 
-			/**
-			 * @returns {string}
-			 * @protected
-			 */
-			_scsc_getValue: function () {
-				return this.element.querySelector('.selectControlSelect').value;
-			},
-
-			/**
-			 * @returns {Array}
-			 * @protected
-			 */
-			_scsc_getValues: function () {
-				var values = [];
-				var options = this.element.querySelector('.selectControlSelect').options;
-				var i, len;
-
-				for (i = 0, len = options.length; i < len; i++) {
-					if (options[i].selected) {
-						values.push(options[i].value);
-					}
-				}
-
-				return values;
-			},
-
-			/**
-			 * @param {string|Array|null} aValues
-			 * @protected
-			 */
-			_scsc_setValues: function (aValues) {
-				DomUtils.selectOptionsByValue(this.element.querySelector('.selectControlSelect'), aValues);
-				this.syncToElement();
-			},
-
-			element_getValue: function (aValue) {
+			element_getValue: function () {
 				console.warn("SelectControl: Element.value has been deprecated.");
-				return this._scsc_getValue();
+				return this.value;
 			},
 
-			element_getValues: function (aValues) {
+			element_getValues: function () {
 				console.warn("SelectControl: Element.values has been deprecated.");
-				return this._scsc_getValues();
+				return this.values;
 			},
 
 			element_setValues: function (aValues) {
 				console.warn("SelectControl: Element.values has been deprecated.");
-				return this._scsc_setValues(aValues);
+				this.values = aValues;
 			},
 
 			syncToElement: function () {
@@ -620,6 +585,34 @@ define(
 				}.bind(this));
 			},
 
+			get value() {
+				return this.element.querySelector('.selectControlSelect').value;
+			},
+
+			set value(aValue) {
+				DomUtils.selectOptionsByValue(this.element.querySelector('.selectControlSelect'), aValue);
+				this.syncToElement();
+			},
+
+			get values() {
+				var values = [];
+				var options = this.element.querySelector('.selectControlSelect').options;
+				var i, len;
+
+				for (i = 0, len = options.length; i < len; i++) {
+					if (options[i].selected) {
+						values.push(options[i].value);
+					}
+				}
+
+				return values;
+			},
+
+			set values(aValues) {
+				DomUtils.selectOptionsByValue(this.element.querySelector('.selectControlSelect'), aValues);
+				this.syncToElement();
+			},
+
 			/**
 			 * @param {{}} [aOptions]
 			 * @param {string} [aOptions.multipleSelectionMode=stay-open] - How selection behaves in multiple mode.
@@ -646,9 +639,6 @@ define(
 				this.element_getValue = this.element_getValue.bind(this);
 				this.element_getValues = this.element_getValues.bind(this);
 				this.element_setValues = this.element_setValues.bind(this);
-				this._scsc_getValue = this._scsc_getValue.bind(this);
-				this._scsc_getValues = this._scsc_getValues.bind(this);
-				this._scsc_setValues = this._scsc_setValues.bind(this);
 
 				var options = StructUtils.assign({
 					multipleSelectionMode: this.element.getAttribute('data-select-control-multiple-selection-mode'),
@@ -661,16 +651,6 @@ define(
 				}
 
 				Object.defineProperties(this, {
-					value: {
-						get: this._scsc_getValue,
-						set: this._scsc_setValues,
-					},
-
-					values: {
-						get: this._scsc_getValues,
-						set: this._scsc_setValues,
-					},
-
 					multipleSelectionMode: {
 						value: options.multipleSelectionMode,
 					},
@@ -687,7 +667,7 @@ define(
 						set: this.element_setValues,
 					}
 				});
-			}
+			},
 		});
 
 		SelectControl._scsc_instances = new WeakMap();

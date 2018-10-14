@@ -91,11 +91,7 @@ define(
 
 				return promise;
 			},
-			
-			_scdc_isOpen: function () {
-				return this.element.getAttribute('aria-hidden') === 'false';
-			},
-			
+
 			/**
 			 * @param aEvt
 			 * @protected
@@ -156,7 +152,11 @@ define(
 					target: this,
 				});
 			},
-			
+
+			get isOpen() {
+				return this.element.getAttribute('aria-hidden') === 'false';
+			},
+
 			hookup: function (aOptions) {
 				var options = StructUtils.assign({
 					autoClose : true,
@@ -165,10 +165,6 @@ define(
 				Object.defineProperties(this, {
 					autoClose: {
 						value: true==options.autoClose, // cast to bool
-					},
-					
-					isOpen: {
-						get: this._scdc_isOpen,
 					},
 				});
 				
