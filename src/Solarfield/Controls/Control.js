@@ -55,9 +55,9 @@ define(
 
 				return this._cfc_eventTarget;
 			},
-			
+
 			syncToElement: function () {
-			
+
 			},
 
 			/**
@@ -96,7 +96,7 @@ define(
 			 */
 			hookup: function (aOptions) {
 				this.syncToElement = this.syncToElement.bind(this);
-				
+
 				this.element.syncControlToElement = this.element_syncControlToElement.bind(this);
 
 				return Promise.resolve();
@@ -109,11 +109,11 @@ define(
 			 */
 			constructor: function (aOptions) {
 				this.element_syncControlToElement = this.element_syncControlToElement.bind(this);
-				
+
 				if (!aOptions.element) throw new Error(
 					"The 'element' option is required."
 				);
-				
+
 				Object.defineProperties(this, {
 					/**
 					 * @memberOf Control
