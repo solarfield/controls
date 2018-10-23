@@ -537,17 +537,20 @@ define(
 					selectEl.addEventListener('keyup', this._scsc_handleSelectKeypress);
 					container.classList.add('selectControl' + (multiple ? 'Multi' : 'Single'));
 
-					var widgetEl = document.createElement('span');
+					var widgetEl = container.querySelector('.selectControlWidget');
+					if (!widgetEl) widgetEl = document.createElement('span');
 					widgetEl.className = 'selectControlWidget';
 					widgetEl.addEventListener('mousedown', this._scsc_handleWidgetClick);
 					widgetEl.addEventListener('keydown', this._scsc_handleWidgetKeypress);
 					widgetEl.addEventListener('keyup', this._scsc_handleWidgetKeypress);
 
-					el = document.createElement('span');
+					el = widgetEl.querySelector('.selectControlLabel');
+					if (!el) el = document.createElement('span');
 					widgetEl.appendChild(el);
 					el.className = 'selectControlLabel';
 
-					el2 = document.createElement('span');
+					el2 = el.querySelector('.selectControlLabelText');
+					if (!el2) el2 = document.createElement('span');
 					el.appendChild(el2);
 					el2.className = 'selectControlLabelText';
 
