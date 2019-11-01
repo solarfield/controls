@@ -341,7 +341,7 @@ define(
 				container.appendChild(popupEl);
 				this._scsc_syncPopupLayout();
 				window.addEventListener('resize', this._scsc_handleWindowResize);
-				window.addEventListener('scroll', this._scsc_handleWindowResize);
+				window.addEventListener('scroll', this._scsc_handleWindowScroll);
 				document.addEventListener('mousedown', this._scsc_handleDocumentClick);
 				document.addEventListener('keydown', this._scsc_handleDocumentKeypress);
 
@@ -364,7 +364,7 @@ define(
 
 			_scsc_closePopup: function () {
 				window.removeEventListener('resize', this._scsc_handleWindowResize);
-				window.removeEventListener('scroll', this._scsc_handleWindowResize);
+				window.removeEventListener('scroll', this._scsc_handleWindowScroll);
 				document.removeEventListener('mousedown', this._scsc_handleDocumentClick);
 				document.removeEventListener('keydown', this._scsc_handleDocumentKeypress);
 
@@ -405,7 +405,11 @@ define(
 			},
 
 			_scsc_handleWindowResize: function () {
-				this._scsc_closePopup();
+				if (SelectControl.getDefault('closeOnResize')) this._scsc_closePopup();
+			},
+
+			_scsc_handleWindowScroll: function () {
+				if (SelectControl.getDefault('closeOnScroll')) this._scsc_closePopup();
 			},
 
 			_scsc_handleDocumentClick: function (aEvt) {
@@ -639,6 +643,7 @@ define(
 				this._scsc_handleDocumentClick = this._scsc_handleDocumentClick.bind(this);
 				this._scsc_handleDocumentKeypress = this._scsc_handleDocumentKeypress.bind(this);
 				this._scsc_handleWindowResize = this._scsc_handleWindowResize.bind(this);
+				this._scsc_handleWindowScroll = this._scsc_handleWindowScroll.bind(this);
 				this.element_getValue = this.element_getValue.bind(this);
 				this.element_getValues = this.element_getValues.bind(this);
 				this.element_setValues = this.element_setValues.bind(this);
@@ -675,6 +680,11 @@ define(
 
 		SelectControl._scsc_instances = new WeakMap();
 
+		SelectControl._scsc_defaults = {
+			closeOnScroll: false,
+			closeOnResize: true,
+		};
+
 		SelectControl.summon = function (aElement) {
 			return this._scsc_instances.get(aElement);
 		};
@@ -690,6 +700,22 @@ define(
 					this._scsc_instances.set(control.element.querySelector('.selectControlSelect'), control);
 					return control
 				}.bind(this));
+		};
+
+		SelectControl.getDefault = function (aName) {
+			if (!aName in this._scsc_defaults) throw new Error(
+				"Unknown SelectControl default: '" + aName + "'"
+			);
+
+			return this._scsc_defaults[aName];
+		};
+
+		SelectControl.setDefault = function (aName, aValue) {
+			if (!aName in this._scsc_defaults) throw new Error(
+				"Unknown SelectControl default: '" + aName + "'"
+			);
+
+			this._scsc_defaults[aName] = aValue;
 		};
 
 		return SelectControl;
