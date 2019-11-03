@@ -125,8 +125,8 @@ define(
 
 			/**
 			 * @param aItem
-			 * @param {bool} aObeyClick
-			 * @param {bool} aSingleMode Whether the click originates from a source that should use the
+			 * @param {boolean} aObeyClick
+			 * @param {boolean} aSingleMode Whether the click originates from a source that should use the
 			 *   alternate "select a single item only" mode. Clicking the checkbox part of an item
 			 *   (in a multiple select) uses "true" here, where as clicking the text label of an item
 			 *   uses "false".
@@ -212,9 +212,9 @@ define(
 
 			/**
 			 * @param {Element} aItemEl The .selectControlItem element.
-			 * @param {bool} aSelected Whether to set the item selected or unselected.
-			 * @param {bool} [aReplace=false] Whether to clear any previously selected options.
-			 * @return {bool}
+			 * @param {boolean} aSelected Whether to set the item selected or unselected.
+			 * @param {boolean} [aReplace=false] Whether to clear any previously selected options.
+			 * @return {boolean}
 			 * @private
 			 */
 			_scsc_setItemSelected: function (aItemEl, aSelected, aReplace) {
