@@ -327,18 +327,9 @@ define(
 				var container = this.element;
 				var el, el2, elToFocus, i, itemEl;
 
-				var popupEl = container.querySelector('.selectControlPopup');
-
-				if (popupEl) {
-					popupEl.textContent = '';
-				}
-
-				else {
-					popupEl = document.createElement('span');
-				}
-
 				var selectEl = container.querySelector('.selectControlSelect');
 
+				var popupEl = document.createElement('span');
 				popupEl.classList.add('selectControlPopup');
 
 				var listEl = document.createElement('ol');
@@ -418,7 +409,10 @@ define(
 				container.dataset.controlOpen = 0;
 
 				if (popup) {
-					promise = this._scsc_animateClose();
+					promise = this._scsc_animateClose()
+						.then(function () {
+							popup.parentNode.removeChild(popup);
+						});
 				}
 				else {
 					promise = Promise.resolve();
