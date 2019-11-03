@@ -148,8 +148,21 @@
 						}
 					}
 
-					.selectControlItem[data-control-selected="1"] .selectControlItemButtonCheckbox:before {
-						content: '\f046';
+					.selectControlItem[data-control-selected="0"] {
+						.selectControlItemButtonCheckbox {
+							opacity: .5;
+						}
+					}
+					.selectControlItem[data-control-selected="1"] {
+						.selectControlItemButtonCheckbox:before {
+							content: '\f046';
+						}
+					}
+
+					.selectControlItemButton:hover {
+						.selectControlItemButtonCheckbox {
+							opacity: 1;
+						}
 					}
 
 				.selectControlSingle .selectControlItemButton {
