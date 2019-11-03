@@ -149,7 +149,7 @@ define(
 						// ignore aSingleMode if there are already multiple items selected
 						// This is to prevent the full selection from being replaced, if a user mis-clicks
 						// onto the text/label (instead of checkbox), during their interaction.
-						&& this.values.length < 2;
+						&& this._scsc_selectedItemCount < 2 && this.values.length < 2;
 
 
 					if (multiple) {
@@ -322,6 +322,8 @@ define(
 			},
 
 			_scsc_openPopup: function () {
+				this._scsc_selectedItemCount = this.values.length;
+
 				var container = this.element;
 				var el, el2, elToFocus, i, itemEl;
 
@@ -692,6 +694,10 @@ define(
 				var options = StructUtils.assign({
 					// TODO
 				}, aOptions||{});
+
+				// gets updated whenever the popup is opened
+				// Holds the count of selected options, at the time it was opened.
+				this._scsc_selectedItemCount = 0;
 
 				Object.defineProperties(this.element, {
 					value: {
