@@ -133,7 +133,7 @@ define(
 			 * @private
 			 */
 			_scsc_syncItemClick: function (aItem, aObeyClick, aSingleMode) {
-				var changed, multiple, singleMode, selectedState, replace, close;
+				var changed, multiple, singleMode, selectedState;
 
 				if (aObeyClick) {
 					multiple = this.element.querySelector('.selectControlSelect').multiple;
