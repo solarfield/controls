@@ -691,10 +691,6 @@ define(
 				this.element_getValues = this.element_getValues.bind(this);
 				this.element_setValues = this.element_setValues.bind(this);
 
-				var options = StructUtils.assign({
-					// TODO
-				}, aOptions||{});
-
 				// gets updated whenever the popup is opened
 				// Holds the count of selected options, at the time it was opened.
 				this._scsc_selectedItemCount = 0;
