@@ -123,17 +123,46 @@ define(
 				this._scsc_syncItemClick(item, obeyClick, false);
 			},
 
+			/**
+			 * @param aItem
+			 * @param {bool} aObeyClick
+			 * @param {bool} aSingleMode Whether the click originates from a source that should use the
+			 *   alternate "select a single item only" mode. Clicking the checkbox part of an item
+			 *   (in a multiple select) uses "true" here, where as clicking the text label of an item
+			 *   uses "false".
+			 * @private
+			 */
 			_scsc_syncItemClick: function (aItem, aObeyClick, aSingleMode) {
-				var changed, multiple, singleMode;
+				var changed, multiple, singleMode, selectedState, replace, close;
 
 				if (aObeyClick) {
 					multiple = this.element.querySelector('.selectControlSelect').multiple;
-					singleMode = aSingleMode && this.multipleSelectionMode != 'stay-open';
+
+
+					// the resolved value for aSingleMode
+					singleMode =
+						aSingleMode
+
+						// in stay-open mode, the popup always stays open, and clicking always toggles items
+						&& SelectControl.getDefault('multipleSelectionMode') !== 'stay-open'
+
+						// ignore aSingleMode if there are already multiple items selected
+						// This is to prevent the full selection from being replaced, if a user mis-clicks
+						// onto the text/label (instead of checkbox), during their interaction.
+						&& this.values.length < 2;
+
+
+					if (multiple) {
+						selectedState = singleMode ? true : !(aItem.dataset.controlSelected == true);
+					}
+					else {
+						selectedState = true;
+					}
 
 					changed = this._scsc_setItemSelected(
 						aItem,
-						multiple ? !(aItem.getAttribute('data-control-selected') == true) : true,
-						multiple && singleMode
+						selectedState,
+						!multiple || singleMode
 					);
 
 					if (!multiple || singleMode) {
@@ -141,6 +170,7 @@ define(
 					}
 				}
 
+				// TODO: should move this to callers, and get rid of aObeyClick
 				this.setInputSource('pointer');
 
 				if (aObeyClick) {
@@ -192,7 +222,18 @@ define(
 				var replace = aReplace == undefined ? false : true == aReplace;
 				var changed, i;
 
-				if (replace) selectEl.selectedIndex = -1;
+				if (replace) {
+					selectEl.selectedIndex = -1;
+
+					Array.from(
+						this.element.querySelectorAll(
+							'.selectControlPopup > .selectControlList > .selectControlItem[data-control-selected="1"]'
+						),
+						function (item) {
+							item.dataset.controlSelected = 0;
+						}
+					);
+				}
 
 				for (i = 0; i < selectEl.options.length; i++) {
 					if (selectEl.options[i].value === aItemEl.getAttribute('data-control-value')) {
@@ -649,20 +690,8 @@ define(
 				this.element_setValues = this.element_setValues.bind(this);
 
 				var options = StructUtils.assign({
-					multipleSelectionMode: this.element.getAttribute('data-select-control-multiple-selection-mode'),
+					// TODO
 				}, aOptions||{});
-				this.element.removeAttribute('data-select-control-multiple-selection-mode');
-
-				// validate the multipleSelectionMode option
-				if (!['stay-open', 'smart'].includes(options.multipleSelectionMode)) {
-					options.multipleSelectionMode = 'stay-open';
-				}
-
-				Object.defineProperties(this, {
-					multipleSelectionMode: {
-						value: options.multipleSelectionMode,
-					},
-				});
 
 				Object.defineProperties(this.element, {
 					value: {
@@ -681,7 +710,17 @@ define(
 		SelectControl._scsc_instances = new WeakMap();
 
 		SelectControl._scsc_defaults = {
-			closeOnScroll: false,
+			// stay-open: The items popup will stay open until clicked away from
+			//
+			// smart: The following behaviours apply:
+			//   - clicking an item's checkbox directly, will toggle that item, and keep the popup open
+			//   - clicking an item's text/label will select that item, unselect all other items,
+			//     and close the popup (similar to how a single-select works):
+			//     - unless there are already multiple items selected, in which clicking the label will
+			//       toggle it, and keep the popup open.
+			multipleSelectionMode: 'smart',
+
+			closeOnScroll: true,
 			closeOnResize: true,
 		};
 
