@@ -329,8 +329,14 @@ define(
 
 				var selectEl = container.querySelector('.selectControlSelect');
 
-				var popupEl = document.createElement('span');
-				popupEl.classList.add('selectControlPopup');
+				var popupEl = this.element.querySelector('.selectControlPopup');
+				if (popupEl) {
+					popupEl.textContent = '';
+				}
+				else {
+					popupEl = document.createElement('span');
+					popupEl.classList.add('selectControlPopup');
+				}
 
 				var listEl = document.createElement('ol');
 				listEl.classList.add('selectControlList');
