@@ -380,8 +380,9 @@ define(
 				container.dataset.controlOpen = 1;
 				container.appendChild(popupEl);
 				this._scsc_syncPopupLayout();
-				window.addEventListener('resize', this._scsc_handleWindowResize);
-				window.addEventListener('scroll', this._scsc_handleWindowScroll);
+				
+				window.addEventListener('resize', this._scsc_handleWindowResize, Control.supportsPassiveEventListeners ? {passive: true} : false);
+				window.addEventListener('scroll', this._scsc_handleWindowScroll, Control.supportsPassiveEventListeners ? {passive: true} : false);
 				document.addEventListener('mousedown', this._scsc_handleDocumentClick);
 				document.addEventListener('keydown', this._scsc_handleDocumentKeypress);
 
@@ -403,8 +404,8 @@ define(
 			},
 
 			_scsc_closePopup: function () {
-				window.removeEventListener('resize', this._scsc_handleWindowResize);
-				window.removeEventListener('scroll', this._scsc_handleWindowScroll);
+				window.removeEventListener('resize', this._scsc_handleWindowResize, Control.supportsPassiveEventListeners ? {passive: true} : false);
+				window.removeEventListener('scroll', this._scsc_handleWindowScroll, Control.supportsPassiveEventListeners ? {passive: true} : false);
 				document.removeEventListener('mousedown', this._scsc_handleDocumentClick);
 				document.removeEventListener('keydown', this._scsc_handleDocumentKeypress);
 
@@ -578,7 +579,7 @@ define(
 					selectEl.classList.add('selectControlSelect');
 					selectEl.addEventListener('change', this._scsc_handleSelectChange);
 					selectEl.addEventListener('input', this._scsc_handleSelectInput);
-					selectEl.addEventListener('touchstart', this._scsc_handleSelectTouch);
+					selectEl.addEventListener('touchstart', this._scsc_handleSelectTouch, Control.supportsPassiveEventListeners ? {passive:true} : false);
 					selectEl.addEventListener('mousedown', this._scsc_handleSelectClick);
 					selectEl.addEventListener('keydown', this._scsc_handleSelectKeypress);
 					selectEl.addEventListener('keyup', this._scsc_handleSelectKeypress);
