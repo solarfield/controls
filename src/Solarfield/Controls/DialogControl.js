@@ -29,6 +29,10 @@ define(
 					this.close();
 				}
 			},
+			
+			_scdc_handleWindowScroll: function () {
+				this._scdc_syncPopupLayout();
+			},
 
 			/**
 			 * @returns {Promise}
@@ -91,6 +95,64 @@ define(
 
 				return promise;
 			},
+			
+			_scdc_syncPopupLayout: function (aOptions) {
+				if (!aOptions) aOptions = this._scdc_lastOptions;
+				
+				var popup = this.element;
+				if (!popup) return;
+				
+				var options = {
+					fullscreen: false,
+					positioningElement: null,
+					onBeforePosition: null,
+				};
+				if (aOptions) {
+					options = StructUtils.assign(options, aOptions);
+					
+					if (options.onBeforePosition) {
+						options = StructUtils.assign(options, options.onBeforePosition()||{});
+					}
+				}
+				this._scdc_lastOptions = options;
+				
+				var positioningElement = options.positioningElement;
+				var styles;
+				
+				if (options.fullscreen) {
+					styles = [
+						['top', 0],
+						['left', 0],
+						['minWidth', '100vw'],
+						['maxWidth', '100vw'],
+						['minHeight', '100vh'],
+						['maxHeight', '100vh'],
+					];
+				}
+				else if (positioningElement) {
+					styles = [
+						['top', Math.max(DomUtils.offsetTop(positioningElement) - window.pageYOffset + (positioningElement.offsetHeight / 2) - (popup.offsetHeight / 2), 0) + 'px'],
+						['left', Math.max(DomUtils.offsetLeft(positioningElement) - window.pageXOffset, 0) + 'px'],
+						['minWidth', positioningElement.offsetWidth + 'px'],
+						['maxWidth', ''],
+						['minHeight', ''],
+						['maxHeight', ''],
+					];
+				}
+				
+				if (styles) {
+					for (var i = 0; i < styles.length; i++) {
+						if (popup.style[styles[i][0]] != styles[i][1]) {
+							popup.style[styles[i][0]] = styles[i][1];
+						}
+					}
+				}
+			},
+			
+			syncToElement: function () {
+				DialogControl.super.prototype.syncToElement.apply(this, arguments);
+				this._scdc_syncPopupLayout();
+			},
 
 			/**
 			 * @param aEvt
@@ -110,12 +172,15 @@ define(
 				if (this.autoClose) {
 					doc.addEventListener('mousedown', this._scdc_handleDocumentClick);
 					doc.addEventListener('keydown', this._scdc_handleDocumentKeypress);
+					doc.addEventListener('scroll', this._scdc_handleWindowScroll, Control.supportsPassiveEventListeners ? {passive:true} : false);
 				}
 
 				this.getEventTarget().dispatchEvent(this, {
 					type: 'open',
 					target: this,
 				});
+				
+				this._scdc_syncPopupLayout(aOptions);
 
 				this._scdc_animateOpen();
 			},
@@ -130,6 +195,7 @@ define(
 				if (this.autoClose) {
 					doc.removeEventListener('mousedown', this._scdc_handleDocumentClick);
 					doc.removeEventListener('keydown', this._scdc_handleDocumentKeypress);
+					doc.removeEventListener('scroll', this._scdc_handleWindowScroll, Control.supportsPassiveEventListeners ? {passive: true} : false);
 				}
 
 				this.getEventTarget().dispatchEvent(this, {
@@ -142,9 +208,9 @@ define(
 
 			toggle: function (aOptions) {
 				if (this.isOpen) {
-					this.close();
+					this.close(aOptions);
 				}	else {
-					this.open();
+					this.open(aOptions);
 				}
 
 				this.getEventTarget().dispatchEvent(this, {
@@ -186,6 +252,7 @@ define(
 
 				this._scdc_handleDocumentClick = this._scdc_handleDocumentClick.bind(this);
 				this._scdc_handleDocumentKeypress = this._scdc_handleDocumentKeypress.bind(this);
+				this._scdc_handleWindowScroll = this._scdc_handleWindowScroll.bind(this);
 				this.handleCloseButtonClick = this.handleCloseButtonClick.bind(this);
 
 				this.close();
