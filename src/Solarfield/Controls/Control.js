@@ -125,7 +125,29 @@ define(
 				});
 			}
 		});
-
+		
+		
+		var supportsPassiveEventListeners;
+		Object.defineProperty(Control, 'supportsPassiveEventListeners', {
+			get: function () {
+				if (supportsPassiveEventListeners === undefined) {
+					// Test via a getter in the options object to see if the passive property is accessed
+					try {
+						var opts = Object.defineProperty({}, 'passive', {
+							get: function () {
+								supportsPassiveEventListeners = true;
+							}
+						});
+						window.addEventListener("testPassive", null, opts);
+						window.removeEventListener("testPassive", null, opts);
+					} catch (e) {
+					}
+				}
+				
+				return supportsPassiveEventListeners;
+			}
+		});
+		
 		/**
 		 * @param {object} aOptions @see ::constructor()
 		 * @returns {Promise.<Solarfield.Controls.Control>}
