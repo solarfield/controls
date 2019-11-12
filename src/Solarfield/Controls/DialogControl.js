@@ -16,10 +16,10 @@ define(
 		 */
 		var DialogControl = ObjectUtils.extend(Control, {
 			_scdc_handleDocumentClick: function (aEvt) {
-				var ancestorSelectControl = DomUtils.getAncestorByClassName(aEvt.target, 'dialogControl');
+				var ancestorDialog = DomUtils.getAncestorByClassName(aEvt.target, 'dialogControl');
 
 				//if the click happened outside the current dialogControl
-				if (!ancestorSelectControl || ancestorSelectControl !== this.element) {
+				if (!(ancestorDialog && (ancestorDialog === this.element || this.element.contains(ancestorDialog)))) {
 					this.close();
 				}
 			},
