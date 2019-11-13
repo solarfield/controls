@@ -64,7 +64,10 @@ define(
 			 * @protected
 			 */
 			element_syncControlToElement: function () {
+				console.groupCollapsed();
 				console.warn("Control: Element.syncControlToElement() has been deprecated.");
+				console.trace();
+				console.groupEnd();
 				this.syncToElement();
 			},
 
@@ -84,7 +87,10 @@ define(
 			 * @public
 			 */
 			getElement: function () {
+				console.groupCollapsed();
 				console.warn("Control::getElement() has been deprecated.");
+				console.trace();
+				console.groupEnd();
 				return this.element;
 			},
 

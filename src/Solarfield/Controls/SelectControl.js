@@ -533,17 +533,26 @@ define(
 			},
 
 			element_getValue: function () {
+				console.groupCollapsed();
 				console.warn("SelectControl: Element.value has been deprecated.");
+				console.trace();
+				console.groupEnd();
 				return this.value;
 			},
 
 			element_getValues: function () {
+				console.groupCollapsed();
 				console.warn("SelectControl: Element.values has been deprecated.");
+				console.trace();
+				console.groupEnd();
 				return this.values;
 			},
 
 			element_setValues: function (aValues) {
+				console.groupCollapsed();
 				console.warn("SelectControl: Element.values has been deprecated.");
+				console.trace();
+				console.groupEnd();
 				this.values = aValues;
 			},
 
