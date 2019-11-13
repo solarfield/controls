@@ -33,6 +33,15 @@ define(
 			_scdc_handleWindowScroll: function () {
 				this._scdc_syncPopupLayout();
 			},
+			
+			_scdc_handleHashchange: function (aEvt) {
+				if (this._scdc_windowHash) {
+					// TODO: support for nested hashes/dialogs
+					if (window.location.hash.replace(/^#/, '') !== this._scdc_windowHash) {
+						this.close();
+					}
+				}
+			},
 
 			/**
 			 * @returns {Promise}
@@ -164,7 +173,13 @@ define(
 
 			open: function (aOptions) {
 				if (this.isOpen) return; // if already open
-
+				
+				if (this._scdc_windowHash) {
+					this._scdc_previousHash = window.location.hash.replace(/^#/, '');
+					window.location.hash = this._scdc_windowHash;
+					window.addEventListener('hashchange', this._scdc_handleHashchange);
+				}
+				
 				var doc = this.element.ownerDocument;
 
 				this.element.setAttribute('aria-hidden', 'false');
@@ -187,7 +202,15 @@ define(
 
 			close: function (aOptions) {
 				if (!this.isOpen) return; // if already closed
-
+				
+				if (this._scdc_windowHash) {
+					window.removeEventListener('hashchange', this._scdc_handleHashchange);
+					if (window.location.hash.replace(/^#/, '') === '#' + this._scdc_windowHash) {
+						window.location.hash = this._scdc_previousWindowHash;
+						this._scdc_previousWindowHash = '';
+					}
+				}
+				
 				var doc = this.element.ownerDocument;
 
 				this.element.setAttribute('aria-hidden', 'true');
@@ -248,12 +271,28 @@ define(
 			},
 
 			constructor: function (aOptions) {
+				var options = StructUtils.assign({
+					windowHash: '',
+				}, aOptions||{});
+				
 				DialogControl.super.call(this, aOptions);
 
 				this._scdc_handleDocumentClick = this._scdc_handleDocumentClick.bind(this);
 				this._scdc_handleDocumentKeypress = this._scdc_handleDocumentKeypress.bind(this);
 				this._scdc_handleWindowScroll = this._scdc_handleWindowScroll.bind(this);
+				this._scdc_handleHashchange = this._scdc_handleHashchange.bind(this);
 				this.handleCloseButtonClick = this.handleCloseButtonClick.bind(this);
+				
+				Object.defineProperties(this, {
+					_scdc_windowHash: {
+						value: options.windowHash,
+					},
+					
+					_scdc_previousWindowHash: {
+						value: '',
+						writable: true,
+					}
+				});
 
 				this.close();
 			}
