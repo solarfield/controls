@@ -126,7 +126,7 @@ define(
 				this._scdc_lastOptions = options;
 				
 				var positioningElement = options.positioningElement;
-				var styles;
+				var styles, popupPosition;
 				
 				if (options.fullscreen) {
 					styles = [
@@ -139,10 +139,12 @@ define(
 					];
 				}
 				else if (positioningElement) {
+					popupPosition = Control.calculateAnchoredPopupFixedPosition(popup, positioningElement);
+					
 					styles = [
-						['top', Math.max(DomUtils.offsetTop(positioningElement) - window.pageYOffset + (positioningElement.offsetHeight / 2) - (popup.offsetHeight / 2), 0) + 'px'],
-						['left', Math.max(DomUtils.offsetLeft(positioningElement) - window.pageXOffset, 0) + 'px'],
-						['minWidth', positioningElement.offsetWidth + 'px'],
+						['top', popupPosition.top + 'px'],
+						['left', popupPosition.left + 'px'],
+						['minWidth', ''],
 						['maxWidth', ''],
 						['minHeight', ''],
 						['maxHeight', ''],

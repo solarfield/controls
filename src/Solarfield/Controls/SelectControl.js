@@ -431,13 +431,15 @@ define(
 			_scsc_syncPopupLayout: function () {
 				var popup = this.element.querySelector('.selectControlPopup');
 				var container = this.element;
-				var i;
+				var i, popupPosition;
 
 				if (popup && container) {
+					popup.style.minWidth = container.offsetWidth + 'px';
+					popupPosition = Control.calculateAnchoredPopupFixedPosition(popup, container);
+					
 					var styles = [
-						['minWidth', container.offsetWidth + 'px'],
-						['left', Math.max(DomUtils.offsetLeft(container) - window.pageXOffset, 0) + 'px'],
-						['top', Math.max(DomUtils.offsetTop(container) - window.pageYOffset + (container.offsetHeight / 2) - (popup.offsetHeight / 2), 0) + 'px']
+						['left', popupPosition.left + 'px'],
+						['top', popupPosition.top + 'px'],
 					];
 
 					for (i = 0; i < styles.length; i++) {

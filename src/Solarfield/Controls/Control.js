@@ -2,9 +2,10 @@ define(
 	[
 		'module',
 		'solarfield/ok-kit-js/src/Solarfield/Ok/ObjectUtils',
-		'solarfield/ok-kit-js/src/Solarfield/Ok/EventTarget'
+		'solarfield/ok-kit-js/src/Solarfield/Ok/EventTarget',
+		'solarfield/ok-kit-js/src/Solarfield/Ok/DomUtils',
 	],
-	function (module, ObjectUtils, EventTarget) {
+	function (module, ObjectUtils, EventTarget, DomUtils) {
 		"use strict";
 
 		/**
@@ -153,6 +154,62 @@ define(
 				return supportsPassiveEventListeners;
 			}
 		});
+		
+		/**
+		 * @param {Element} aPopupElement The popup/dialog element.
+		 * @param {Element} aAnchorElement The element that initiated the display of the popup.
+		 *   We will attempt to center the popup over this element.
+		 * @protected
+		 * @static
+		 */
+		Control.calculateAnchoredPopupFixedPosition = function (aPopupElement, aAnchorElement) {
+			var viewportTop, viewportLeft, viewportRight, viewportBottom;
+			var anchorTop, anchorLeft;
+			var popupTop, popupLeft, popupHeight, popupWidth;
+			var offset;
+			
+			viewportTop = 0;
+			viewportLeft = 0;
+			viewportRight = window.innerWidth;
+			viewportBottom = window.innerHeight;
+			
+			anchorTop = DomUtils.offsetTop(aAnchorElement) - window.pageYOffset;
+			anchorLeft = DomUtils.offsetLeft(aAnchorElement) - window.pageXOffset;
+			
+			popupHeight = aPopupElement.offsetHeight;
+			popupWidth = aPopupElement.offsetWidth;
+			
+			// top
+			{
+				// center popup over anchor
+				popupTop = anchorTop + (aAnchorElement.offsetHeight / 2) - (popupHeight / 2);
+				
+				// constrain popup bottom edge,  to viewport bottom edge
+				offset = (popupTop + popupHeight) - viewportBottom;
+				if (offset > 0) popupTop -= offset;
+				
+				// constrain popup top edge, to viewport top edge
+				popupTop = Math.max(popupTop, viewportTop);
+			}
+			
+			// left
+			{
+				// center popup over anchor
+				popupLeft = anchorLeft + (aAnchorElement.offsetWidth / 2) - (popupWidth / 2);
+				
+				// constrain popup right edge,  to viewport right edge
+				offset = (popupLeft + popupWidth) - viewportRight;
+				if (offset > 0) popupLeft -= offset;
+				
+				// constrain popup left edge, to viewport left edge
+				popupLeft = Math.max(viewportLeft, popupLeft);
+			}
+			
+			return {
+				top: popupTop,
+				left: popupLeft,
+			};
+		};
 		
 		/**
 		 * @param {object} aOptions @see ::constructor()
