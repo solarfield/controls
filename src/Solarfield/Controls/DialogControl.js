@@ -139,18 +139,20 @@ define(
 					];
 				}
 				else if (positioningElement) {
-					popupPosition = Control.calculateAnchoredPopupFixedPosition(popup, positioningElement);
-					
-					styles = [
-						['top', popupPosition.top + 'px'],
-						['left', popupPosition.left + 'px'],
-						['minWidth', ''],
-						['maxWidth', ''],
-						['minHeight', ''],
-						['maxHeight', ''],
-					];
+					if (document.contains(positioningElement)) {
+						popupPosition = Control.calculateAnchoredPopupFixedPosition(popup, positioningElement);
+
+						styles = [
+							['top', popupPosition.top + 'px'],
+							['left', popupPosition.left + 'px'],
+							['minWidth', ''],
+							['maxWidth', ''],
+							['minHeight', ''],
+							['maxHeight', ''],
+						];
+					}
 				}
-				
+
 				if (styles) {
 					for (var i = 0; i < styles.length; i++) {
 						if (popup.style[styles[i][0]] != styles[i][1]) {
