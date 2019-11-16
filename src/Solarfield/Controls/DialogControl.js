@@ -29,11 +29,11 @@ define(
 					this.close();
 				}
 			},
-			
+
 			_scdc_handleWindowScroll: function () {
 				this._scdc_syncPopupLayout();
 			},
-			
+
 			_scdc_handleHashchange: function (aEvt) {
 				if (this._scdc_windowHash) {
 					// TODO: support for nested hashes/dialogs
@@ -63,13 +63,13 @@ define(
 						}
 					});
 
-					popup.dataset.controlAnimation = 'opening';
+				popup.dataset.controlAnimation = 'opening';
 
-					AnimUtils.setAnimation(popup, {
-						name: 'dialogControlOpen',
-						duration: getComputedStyle(popup).animationDuration,
-						fillMode: 'forwards'
-					});
+				AnimUtils.setAnimation(popup, {
+					name: 'dialogControlOpen',
+					duration: getComputedStyle(popup).animationDuration,
+					fillMode: 'forwards'
+				});
 
 				return promise;
 			},
@@ -104,13 +104,13 @@ define(
 
 				return promise;
 			},
-			
+
 			_scdc_syncPopupLayout: function (aOptions) {
 				if (!aOptions) aOptions = this._scdc_lastOptions;
-				
+
 				var popup = this.element;
 				if (!popup) return;
-				
+
 				var options = {
 					fullscreen: false,
 					positioningElement: null,
@@ -118,16 +118,16 @@ define(
 				};
 				if (aOptions) {
 					options = StructUtils.assign(options, aOptions);
-					
+
 					if (options.onBeforePosition) {
 						options = StructUtils.assign(options, options.onBeforePosition()||{});
 					}
 				}
 				this._scdc_lastOptions = options;
-				
+
 				var positioningElement = options.positioningElement;
 				var styles, popupPosition;
-				
+
 				if (options.fullscreen) {
 					styles = [
 						['top', 0],
@@ -159,7 +159,7 @@ define(
 					}
 				}
 			},
-			
+
 			syncToElement: function () {
 				DialogControl.super.prototype.syncToElement.apply(this, arguments);
 				this._scdc_syncPopupLayout();
@@ -175,13 +175,13 @@ define(
 
 			open: function (aOptions) {
 				if (this.isOpen) return; // if already open
-				
+
 				if (this._scdc_windowHash) {
 					this._scdc_previousHash = window.location.hash.replace(/^#/, '');
 					window.location.hash = this._scdc_windowHash;
 					window.addEventListener('hashchange', this._scdc_handleHashchange);
 				}
-				
+
 				var doc = this.element.ownerDocument;
 
 				this.element.setAttribute('aria-hidden', 'false');
@@ -196,7 +196,7 @@ define(
 					type: 'open',
 					target: this,
 				});
-				
+
 				this._scdc_syncPopupLayout(aOptions);
 
 				this._scdc_animateOpen();
@@ -204,7 +204,7 @@ define(
 
 			close: function (aOptions) {
 				if (!this.isOpen) return; // if already closed
-				
+
 				if (this._scdc_windowHash) {
 					window.removeEventListener('hashchange', this._scdc_handleHashchange);
 					if (window.location.hash.replace(/^#/, '') === '#' + this._scdc_windowHash) {
@@ -212,7 +212,7 @@ define(
 						this._scdc_previousWindowHash = '';
 					}
 				}
-				
+
 				var doc = this.element.ownerDocument;
 
 				this.element.setAttribute('aria-hidden', 'true');
@@ -260,23 +260,23 @@ define(
 				});
 
 				return DialogControl.super.prototype.hookup.apply(this, arguments)
-				.then(function () {
-					return CssLoader.import('solarfield/controls/src/Solarfield/Controls/style/dialog-control');
-				}.bind(this))
-				.then(function () {
-					this.element.classList.add('dialogControl');
+					.then(function () {
+						return CssLoader.import('solarfield/controls/src/Solarfield/Controls/style/dialog-control');
+					}.bind(this))
+					.then(function () {
+						this.element.classList.add('dialogControl');
 
-					Array.from(this.element.querySelectorAll('.dialogControlCloseButton'), function (buttonEl) {
-						buttonEl.addEventListener('click', this.handleCloseButtonClick);
-					}.bind(this));
-				}.bind(this))
+						Array.from(this.element.querySelectorAll('.dialogControlCloseButton'), function (buttonEl) {
+							buttonEl.addEventListener('click', this.handleCloseButtonClick);
+						}.bind(this));
+					}.bind(this))
 			},
 
 			constructor: function (aOptions) {
 				var options = StructUtils.assign({
 					windowHash: '',
 				}, aOptions||{});
-				
+
 				DialogControl.super.call(this, aOptions);
 
 				this._scdc_handleDocumentClick = this._scdc_handleDocumentClick.bind(this);
@@ -284,12 +284,12 @@ define(
 				this._scdc_handleWindowScroll = this._scdc_handleWindowScroll.bind(this);
 				this._scdc_handleHashchange = this._scdc_handleHashchange.bind(this);
 				this.handleCloseButtonClick = this.handleCloseButtonClick.bind(this);
-				
+
 				Object.defineProperties(this, {
 					_scdc_windowHash: {
 						value: options.windowHash,
 					},
-					
+
 					_scdc_previousWindowHash: {
 						value: '',
 						writable: true,
