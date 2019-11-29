@@ -139,7 +139,7 @@ define(
 					];
 				}
 				else if (positioningElement) {
-					if (document.contains(positioningElement)) {
+					if (document.documentElement.contains(positioningElement)) {
 						popupPosition = Control.calculateAnchoredPopupFixedPosition(popup, positioningElement);
 
 						styles = [
