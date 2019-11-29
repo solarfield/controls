@@ -130,6 +130,8 @@ define(
 						value: aOptions.element,
 					}
 				});
+				
+				Control.setUaCompatAttributes(this.element);
 			}
 		});
 		
@@ -154,6 +156,26 @@ define(
 				return supportsPassiveEventListeners;
 			}
 		});
+		
+		var compatUaEngine;
+		Object.defineProperty(Control, 'compatUaEngine', {
+			get: function () {
+				if (compatUaEngine === undefined) {
+					if (self.navigator.userAgent.indexOf('Trident/7.0') > -1) compatUaEngine = 'trident';
+					else compatUaEngine = '';
+				}
+				
+				return compatUaEngine;
+			}
+		});
+		
+		/**
+		 * @protected
+		 * @static
+		 */
+		Control.setUaCompatAttributes = function (aElement) {
+			if (this.compatUaEngine) aElement.dataset.controlCompatUaEngine = this.compatUaEngine;
+		};
 		
 		/**
 		 * @param {Element} aPopupElement The popup/dialog element.
