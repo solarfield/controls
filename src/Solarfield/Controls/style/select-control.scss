@@ -72,6 +72,10 @@
 			height: 100%;
 			opacity: 0.01;
 			cursor: pointer;
+			
+			option[data-control-include-in-popup="0"] {
+				display: none;
+			}
 		}
 
 		.selectControl[data-control-input-source="keyboard"],

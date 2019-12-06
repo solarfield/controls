@@ -343,38 +343,40 @@ define(
 				popupEl.appendChild(listEl);
 
 				for (i = 0; i < selectEl.options.length; i++) {
-					itemEl = document.createElement('li');
-					listEl.appendChild(itemEl);
-					itemEl.classList.add('selectControlItem');
-					itemEl.setAttribute('tabindex', '0');
-					itemEl.dataset.controlValue = selectEl.options[i].value;
-					itemEl.addEventListener('keydown', this._scsc_handleItemKeypress);
-					if (selectEl.options[i].selected) {
-						this._scsc_setItemSelected(itemEl, true);
-						if (!elToFocus) elToFocus = itemEl;
+					if (selectEl.options[i].dataset.controlIncludeInPopup !== '0') {
+						itemEl = document.createElement('li');
+						listEl.appendChild(itemEl);
+						itemEl.classList.add('selectControlItem');
+						itemEl.setAttribute('tabindex', '0');
+						itemEl.dataset.controlValue = selectEl.options[i].value;
+						itemEl.addEventListener('keydown', this._scsc_handleItemKeypress);
+						if (selectEl.options[i].selected) {
+							this._scsc_setItemSelected(itemEl, true);
+							if (!elToFocus) elToFocus = itemEl;
+						}
+						else {
+							this._scsc_setItemSelected(itemEl, false);
+						}
+	
+						el = document.createElement('span');
+						itemEl.appendChild(el);
+						el.classList.add('selectControlItemButton');
+						el.addEventListener('click', this._scsc_handleItemButtonClick);
+	
+						el2 = document.createElement('span');
+						el.appendChild(el2);
+						el2.classList.add('selectControlItemButtonCheckbox');
+	
+						el = document.createElement('span');
+						itemEl.appendChild(el);
+						el.classList.add('selectControlItemLabel');
+						el.addEventListener('click', this._scsc_handleItemLabelClick);
+	
+						el2 = document.createElement('span');
+						el.appendChild(el2);
+						el2.classList.add('selectControlItemLabelText');
+						el2.textContent = selectEl.options[i].text;
 					}
-					else {
-						this._scsc_setItemSelected(itemEl, false);
-					}
-
-					el = document.createElement('span');
-					itemEl.appendChild(el);
-					el.classList.add('selectControlItemButton');
-					el.addEventListener('click', this._scsc_handleItemButtonClick);
-
-					el2 = document.createElement('span');
-					el.appendChild(el2);
-					el2.classList.add('selectControlItemButtonCheckbox');
-
-					el = document.createElement('span');
-					itemEl.appendChild(el);
-					el.classList.add('selectControlItemLabel');
-					el.addEventListener('click', this._scsc_handleItemLabelClick);
-
-					el2 = document.createElement('span');
-					el.appendChild(el2);
-					el2.classList.add('selectControlItemLabelText');
-					el2.textContent = selectEl.options[i].text;
 				}
 
 				container.dataset.controlOpen = 1;
