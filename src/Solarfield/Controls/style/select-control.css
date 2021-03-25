@@ -70,6 +70,9 @@
   opacity: 0.01;
   cursor: pointer;
 }
+.selectControlSelect option[data-control-include-in-popup="0"] {
+  display: none;
+}
 
 .selectControl[data-control-input-source=keyboard] .selectControlSelect,
 .selectControl[data-control-pointer-type=mouse] .selectControlSelect {
