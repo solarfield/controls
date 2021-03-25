@@ -1,15 +1,18 @@
 [data-css-module-id="solarfield/controls/src/Solarfield/Controls/style/select-control"] {
-  display: none; }
+  display: none;
+}
 
 .selectControl {
   display: inline-block;
   position: relative;
   box-sizing: border-box;
   max-width: 100%;
-  text-align: left; }
+  text-align: left;
+}
 
 .selectControl[data-control-ready="1"] {
-  visibility: visible; }
+  visibility: visible;
+}
 
 .selectControlWidget {
   display: flex;
@@ -21,25 +24,29 @@
   border: 1px solid ButtonText;
   color: ButtonText;
   background: ButtonFace;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .selectControlLabel {
   display: flex;
   flex: 1;
   align-items: center;
-  padding: .4em;
-  min-width: 0; }
+  padding: 0.4em;
+  min-width: 0;
+}
 
 .selectControlLabelText {
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; }
+  text-overflow: ellipsis;
+}
 
 .selectControlButton {
   display: flex;
   align-items: center;
-  padding: .4em; }
+  padding: 0.4em;
+}
 
 .selectControlButtonIcon {
   display: inline-block;
@@ -49,12 +56,8 @@
   margin: 0;
   width: 1em;
   height: 1em;
-  text-align: center; }
-  .selectControlButtonIcon:before {
-    content: '\f0d7';
-    display: block;
-    vertical-align: baseline;
-    line-height: 1; }
+  text-align: center;
+}
 
 .selectControlSelect {
   position: absolute;
@@ -65,17 +68,18 @@
   width: 100%;
   height: 100%;
   opacity: 0.01;
-  cursor: pointer; }
-  .selectControlSelect option[data-control-include-in-popup="0"] {
-    display: none; }
+  cursor: pointer;
+}
 
-.selectControl[data-control-input-source="keyboard"] .selectControlSelect,
-.selectControl[data-control-pointer-type="mouse"] .selectControlSelect {
-  display: none; }
+.selectControl[data-control-input-source=keyboard] .selectControlSelect,
+.selectControl[data-control-pointer-type=mouse] .selectControlSelect {
+  display: none;
+}
 
 .selectControlWidget:focus {
   position: relative;
-  outline: 1px solid Highlight; }
+  outline: 1px solid Highlight;
+}
 
 .selectControlPopup {
   display: block;
@@ -95,15 +99,18 @@
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+}
 
 .selectControl[data-control-open="0"] .selectControlPopup {
-  display: none; }
+  display: none;
+}
 
 .selectControlList {
   display: block;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+}
 
 .selectControlItem {
   display: flex;
@@ -111,15 +118,18 @@
   padding: 0;
   border: 0 solid ButtonShadow;
   outline: none;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .selectControlItem + .selectControlItem {
-  border-top-width: 1px; }
+  border-top-width: 1px;
+}
 
 .selectControlItemButton {
   display: flex;
   align-items: center;
-  padding: .4em; }
+  padding: 0.4em;
+}
 
 .selectControlItemButtonCheckbox {
   display: inline-block;
@@ -129,58 +139,64 @@
   margin: 0;
   width: 1em;
   height: 1em;
-  text-align: center; }
-  .selectControlItemButtonCheckbox:before {
-    content: '\f096';
-    display: block;
-    vertical-align: baseline;
-    line-height: 1; }
+  text-align: center;
+}
 
 .selectControlItem[data-control-selected="0"] .selectControlItemButtonCheckbox {
-  opacity: .5; }
-
-.selectControlItem[data-control-selected="1"] .selectControlItemButtonCheckbox:before {
-  content: '\f046'; }
+  opacity: 0.5;
+}
 
 .selectControlItemButton:hover .selectControlItemButtonCheckbox {
-  opacity: 1; }
+  opacity: 1;
+}
 
 .selectControlSingle .selectControlItemButton {
-  display: none; }
+  display: none;
+}
 
 .selectControlItemLabel {
   display: flex;
   flex: 1;
   align-items: center;
-  padding: .4em; }
+  padding: 0.4em;
+}
 
 .selectControlItemLabelText {
-  flex: 1; }
+  flex: 1;
+}
 
-.selectControl[data-control-input-source="keyboard"] .selectControlItem:focus {
+.selectControl[data-control-input-source=keyboard] .selectControlItem:focus {
   outline: 1px solid Highlight;
-  outline-offset: -1px; }
+  outline-offset: -1px;
+}
 
 .selectControlItem[data-control-selected="1"] {
   background: Highlight;
-  color: HighlightText; }
+  color: HighlightText;
+}
 
 @keyframes selectControlPopupOpen {
   100% {
     opacity: 1;
-    transform: scale(1); } }
+    transform: scale(1);
+  }
+}
 @keyframes selectControlPopupClose {
   100% {
     opacity: 0;
-    transform: scale(0.95); } }
-.selectControl[data-control-open="1"] .selectControlPopup[data-control-animation="opening"] {
+    transform: scale(0.95);
+  }
+}
+.selectControl[data-control-open="1"] .selectControlPopup[data-control-animation=opening] {
   opacity: 0;
   transform: scale(0.95);
-  animation-duration: 200ms; }
+  animation-duration: 200ms;
+}
 
-.selectControl[data-control-open="0"] .selectControlPopup[data-control-animation="closing"] {
+.selectControl[data-control-open="0"] .selectControlPopup[data-control-animation=closing] {
   opacity: 1;
   display: block;
-  animation-duration: 200ms; }
+  animation-duration: 200ms;
+}
 
 /*# sourceMappingURL=select-control.css.map */

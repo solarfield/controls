@@ -231,6 +231,7 @@ define(
 						),
 						function (item) {
 							item.dataset.controlSelected = 0;
+							item.querySelector('.selectControlItemButtonCheckbox').dataset.iconPurpose = 'checkbox-unchecked';
 						}
 					);
 				}
@@ -244,9 +245,11 @@ define(
 
 				if (aSelected) {
 					aItemEl.dataset.controlSelected = 1;
+					aItemEl.querySelector('.selectControlItemButtonCheckbox').dataset.iconPurpose = 'checkbox-checked';
 				}
 				else {
 					aItemEl.dataset.controlSelected = 0;
+					aItemEl.querySelector('.selectControlItemButtonCheckbox').dataset.iconPurpose = 'checkbox-unchecked';
 				}
 
 				this._scsc_syncWidgetToSelect();
@@ -350,6 +353,26 @@ define(
 						itemEl.setAttribute('tabindex', '0');
 						itemEl.dataset.controlValue = selectEl.options[i].value;
 						itemEl.addEventListener('keydown', this._scsc_handleItemKeypress);
+
+						el = document.createElement('span');
+						itemEl.appendChild(el);
+						el.classList.add('selectControlItemButton');
+						el.addEventListener('click', this._scsc_handleItemButtonClick);
+
+						el2 = document.createElement('span');
+						el.appendChild(el2);
+						el2.classList.add('selectControlItemButtonCheckbox', 'icon');
+
+						el = document.createElement('span');
+						itemEl.appendChild(el);
+						el.classList.add('selectControlItemLabel');
+						el.addEventListener('click', this._scsc_handleItemLabelClick);
+
+						el2 = document.createElement('span');
+						el.appendChild(el2);
+						el2.classList.add('selectControlItemLabelText');
+						el2.textContent = selectEl.options[i].text;
+
 						if (selectEl.options[i].selected) {
 							this._scsc_setItemSelected(itemEl, true);
 							if (!elToFocus) elToFocus = itemEl;
@@ -357,25 +380,6 @@ define(
 						else {
 							this._scsc_setItemSelected(itemEl, false);
 						}
-	
-						el = document.createElement('span');
-						itemEl.appendChild(el);
-						el.classList.add('selectControlItemButton');
-						el.addEventListener('click', this._scsc_handleItemButtonClick);
-	
-						el2 = document.createElement('span');
-						el.appendChild(el2);
-						el2.classList.add('selectControlItemButtonCheckbox');
-	
-						el = document.createElement('span');
-						itemEl.appendChild(el);
-						el.classList.add('selectControlItemLabel');
-						el.addEventListener('click', this._scsc_handleItemLabelClick);
-	
-						el2 = document.createElement('span');
-						el.appendChild(el2);
-						el2.classList.add('selectControlItemLabelText');
-						el2.textContent = selectEl.options[i].text;
 					}
 				}
 
@@ -621,7 +625,8 @@ define(
 
 					el2 = document.createElement('span');
 					el.appendChild(el2);
-					el2.className = 'selectControlButtonIcon';
+					el2.classList.add('selectControlButtonIcon', 'icon');
+					el2.dataset.iconPurpose = 'drop-down';
 
 					container.insertBefore(widgetEl, container.firstChild);
 					container.dataset.controlReady = 1;

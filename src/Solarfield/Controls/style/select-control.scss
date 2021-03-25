@@ -53,13 +53,6 @@
 				width: 1em;
 				height: 1em;
 				text-align: center;
-
-				&:before {
-					content: '\f0d7';
-					display: block;
-					vertical-align: baseline;
-					line-height: 1;
-				}
 			}
 
 		.selectControlSelect {
@@ -143,13 +136,6 @@
 						width: 1em;
 						height: 1em;
 						text-align: center;
-
-						&:before {
-							content: '\f096';
-							display: block;
-							vertical-align: baseline;
-							line-height: 1;
-						}
 					}
 
 					.selectControlItem[data-control-selected="0"] {
@@ -158,8 +144,8 @@
 						}
 					}
 					.selectControlItem[data-control-selected="1"] {
-						.selectControlItemButtonCheckbox:before {
-							content: '\f046';
+						.selectControlItemButtonCheckbox {
+
 						}
 					}
 
