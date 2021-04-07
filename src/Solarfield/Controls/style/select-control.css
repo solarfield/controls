@@ -50,8 +50,6 @@
 
 .selectControlButtonIcon {
   display: inline-block;
-  font-weight: normal;
-  font-family: icons;
   line-height: 1;
   margin: 0;
   width: 1em;
@@ -136,8 +134,6 @@
 
 .selectControlItemButtonCheckbox {
   display: inline-block;
-  font-weight: normal;
-  font-family: icons;
   line-height: 1;
   margin: 0;
   width: 1em;
