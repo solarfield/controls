@@ -593,6 +593,10 @@ define(
 
 					var selectEl = container.querySelector('select');
 					var multiple = selectEl.multiple;
+
+					// force select to be size=1, to trigger native popup on android, etc.
+					selectEl.setAttribute('size', '1');
+
 					selectEl.classList.add('selectControlSelect');
 					selectEl.addEventListener('change', this._scsc_handleSelectChange);
 					selectEl.addEventListener('input', this._scsc_handleSelectInput);
