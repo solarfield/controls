@@ -13,7 +13,8 @@ define(
 		 */
 		var Control = ObjectUtils.extend(Object, {
 			getInputSource: function () {
-				return this.dataset.controlInputSource ?? null;
+				const value = this.dataset.controlInputSource;
+				return value === undefined ? null : value;
 			},
 			
 			/**
@@ -29,7 +30,8 @@ define(
 			},
 
 			getPointerType: function () {
-				return this.dataset.controlPointerType ?? null;
+				const value = this.dataset.controlPointerType;
+				return value === undefined ? null : value;
 			},
 			
 			/**
