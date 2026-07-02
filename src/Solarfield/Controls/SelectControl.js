@@ -96,12 +96,10 @@ define(
 			
 			_scsc_handleWidgetMouseover: function (aEvt) {
 				// workaround: firefox issue where select's popup appears upon first click
-				if ('MOZ_SOURCE_TOUCH' in aEvt) {
-					if (aEvt.mozInputSource !== aEvt.MOZ_SOURCE_TOUCH) {
-						this.setInputSource('pointer');
-						this.setPointerType('mouse');
-						this._scsc_syncFocusables();
-					}
+				if (aEvt.pointerType !== 'touch') {
+					this.setInputSource('pointer');
+					this.setPointerType('mouse');
+					this._scsc_syncFocusables();
 				}
 			},
 
@@ -600,7 +598,10 @@ define(
 
 					container.classList.add('selectControl');
 					container.dataset.controlOpen = 0;
-					container.addEventListener('mouseover', this._scsc_handleWidgetMouseover);
+					
+					if (navigator.userAgent.search(/firefox/i) > -1) {
+						container.addEventListener('pointerover', this._scsc_handleWidgetMouseover);
+					}
 
 					var selectEl = container.querySelector('select');
 					var multiple = selectEl.multiple;
