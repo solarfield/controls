@@ -75,7 +75,6 @@ define(
 
 			_scsc_handleSelectKeypress: function () {
 				this.setInputSource('keyboard');
-				this.setPointerType(null);
 
 				this._scsc_syncFocusables();
 
@@ -92,6 +91,18 @@ define(
 				}
 
 				this.setInputSource('pointer');
+				this._scsc_syncFocusables();
+			},
+			
+			_scsc_handleWidgetMouseover: function (aEvt) {
+				// workaround: firefox issue where select's popup appears upon first click
+				if ('MOZ_SOURCE_TOUCH' in aEvt) {
+					if (aEvt.mozInputSource !== aEvt.MOZ_SOURCE_TOUCH) {
+						this.setInputSource('pointer');
+						this.setPointerType('mouse');
+						this._scsc_syncFocusables();
+					}
+				}
 			},
 
 			_scsc_handleWidgetKeypress: function (aEvt) {
@@ -108,7 +119,6 @@ define(
 				}
 
 				this.setInputSource('keyboard');
-				this.setPointerType(null);
 			},
 
 			_scsc_handleItemLabelClick: function (aEvt) {
@@ -590,6 +600,7 @@ define(
 
 					container.classList.add('selectControl');
 					container.dataset.controlOpen = 0;
+					container.addEventListener('mouseover', this._scsc_handleWidgetMouseover);
 
 					var selectEl = container.querySelector('select');
 					var multiple = selectEl.multiple;
@@ -702,6 +713,7 @@ define(
 				this._scsc_handleSelectClick = this._scsc_handleSelectClick.bind(this);
 				this._scsc_handleSelectKeypress = this._scsc_handleSelectKeypress.bind(this);
 				this._scsc_handleWidgetClick = this._scsc_handleWidgetClick.bind(this);
+				this._scsc_handleWidgetMouseover = this._scsc_handleWidgetMouseover.bind(this);
 				this._scsc_handleWidgetKeypress = this._scsc_handleWidgetKeypress.bind(this);
 				this._scsc_handleItemLabelClick = this._scsc_handleItemLabelClick.bind(this);
 				this._scsc_handleItemButtonClick = this._scsc_handleItemButtonClick.bind(this);
