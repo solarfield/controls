@@ -71,7 +71,7 @@
 		}
 
 		.selectControl[data-control-input-source="keyboard"],
-		.selectControl[data-control-pointer-type="mouse"] {
+		.selectControl[data-control-input-source="pointer"][data-control-pointer-type="mouse"] {
 			.selectControlSelect {
 				display: none;
 			}
