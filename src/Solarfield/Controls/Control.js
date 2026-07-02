@@ -12,6 +12,10 @@ define(
 		 * @class Control
 		 */
 		var Control = ObjectUtils.extend(Object, {
+			getInputSource: function () {
+				return this.dataset.controlInputSource ?? null;
+			},
+			
 			/**
 			 * @param {string} aSource
 			 * @protected
@@ -24,6 +28,10 @@ define(
 				}
 			},
 
+			getPointerType: function () {
+				return this.dataset.controlPointerType ?? null;
+			},
+			
 			/**
 			 * @param {string|null} aType
 			 * @protected
