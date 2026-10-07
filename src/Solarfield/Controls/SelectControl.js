@@ -359,6 +359,7 @@ define(
 						listEl.appendChild(itemEl);
 						itemEl.classList.add('selectControlItem');
 						itemEl.setAttribute('tabindex', '0');
+						if (selectEl.options[i].dataset.isPlaceholder) itemEl.dataset.isPlaceholder = '1';
 						itemEl.dataset.controlValue = selectEl.options[i].value;
 						itemEl.addEventListener('keydown', this._scsc_handleItemKeypress);
 
